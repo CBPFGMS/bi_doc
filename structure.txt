@@ -1,0 +1,38 @@
+
+1.	Charts
+	a.	Visual aspects
+		i.	Name
+		ii.	Purpose and data encoding
+		iii. Description of the data encoding
+		iv.	Description of the interactivity
+	b.	Technical aspects
+		i.	Data attributes
+			1.	Name
+			2.	Purpose
+			3.	Accepted values
+		ii.	Language
+		iii.	Style sheets
+		iv.	Libraries used
+			1.	Name
+			2.	Version
+			3.	Purpose
+			4.	Location
+		v.	APIs used
+			1.	Data APIs (with links to the API section)
+				a.	Location
+				b.	Description
+				c.	Schema
+			2.	Master table APIs
+				a.	Location
+				b.	Schema
+			3.	Consumption of the APIs
+				a.	Origin
+				b.	Filters
+
+2.	APIs
+	a.	Location
+	b.	Description
+	c.	Columns
+	d.	Usage
+	
+
