@@ -12,9 +12,9 @@ This repository contains the documentation for all data visualisations, as well 
 
 ### CBPF Data Hub
 
--   [CBPF by year](./Dataviz/CBPF%20Data%20Hub/CBPF%20by%20year.md)
--   [Allocation flow](./Dataviz/CBPF%20Data%20Hub/Allocation%20flow.md)
--   Allocations:
+-   [CBPF by year](./Dataviz/CBPF-Data-Hub/CBPF-by-year.md)
+-   [Allocation flow](./Dataviz/CBPF-Data-Hub/Allocation-flow.md)
+-   [Allocations](./Dataviz/CBPF-Data-Hub/Allocations.md)
 -   Contributions:
 -   Contribution trends:
 -   Funding overview:
