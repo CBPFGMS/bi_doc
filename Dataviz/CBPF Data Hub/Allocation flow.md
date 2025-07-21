@@ -1,18 +1,20 @@
-# CBPF by year
+# Allocation flow
 
-Data visualisation hosted at: https://cbpf.data.unocha.org/?#byyear_heading
+Data visualisation hosted at: https://cbpf.data.unocha.org/#netfunding_heading
 
 ## Introduction
 
 ### Purpose
 
-**CBPF by year** is a mixed chart that shows both contributions and allocations, having as the central point those two totals. The contributions are divided by donors, and the allocations are divided on the first level in Standard and Reserve. For both allocation sources, the second level divides those values by funds.
+**Allocation flow** is a data visualization that shows the flow of allocated values from the funds to the implementing partners, or direct partners, which are the direct recipients from the funds, and to sub-implementing partners, which receive funds from direct partners.
 
-This dataviz allows a the user to quickly compare the contributions and allocations figures, as well as comparing the breakdown for donors (contributions) and allocation sources plus funds (allocations).
+The implementing partners, or direct partners, may or may not transfer part of their funds to sub-implementing partners, or indirect partners. These sub-implementing partners can be the same or a different partner type (National NGO, International NGO, UN Agency, Red Cross/Red Crescent Society).
 
 ### Data encoding
 
-This charts uses a sankey diagram for depicting the contribution and allocation values. The width of each ribbon encodes the total donated/allocated.
+This charts uses a sankey diagram for depicting both the flow from funds to the implementing partners, that sit in the middle of the chart, and from these implementing partners to the sub-implementing partners (if any), that sit on the right hand side of the chart. The width of each ribbon encodes the total donated/allocated.
+
+As the funds may not be transferred to sub-implementing partners, for easiest comparison, the amount kept by the implementing partners is repeated on the right hand side of the sankey diagram. On that area, a color encoding is used: gray for direct partners, red for sub-implementing partners.
 
 ### Interactivity
 
@@ -28,13 +30,15 @@ This charts uses a sankey diagram for depicting the contribution and allocation 
 
 3. The year buttons select the year depicted in the dataviz. Multiple years can be selected by double-clicking or pressing ALT while clicking.
 
+4. The user can aggregate the values on the right hand side of the sankey diagram by partner level, meaning that direct and indirect partners will sit in their respective groups, or by partner type, meaning that each partner type (National NGO, International NGO, UN Agency, Red Cross/Red Crescent Society) will show a breakdown by implementing/sub-implementing partner.
+
 ## Technical aspects
 
 ### Data attributes
 
-The code retrieves data attributes in a `<div>` with `id="d3chartcontainercbsank"`. These data attributes are:
+The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbinad"`. These data attributes are:
 
--   **`data-title`**: sets the title of the chart. If left empty the chart title defaults to _CBPF By Year_.
+-   **`data-title`**: sets the title of the chart. If left empty the chart title defaults to _Allocation flow (net funding)_.
 
 -   **`data-year`**: defines the year depicted by the data visualisation when the page loads. The value has to be a string containing the year with century as a decimal number, such as:
 
@@ -48,7 +52,7 @@ The code retrieves data attributes in a `<div>` with `id="d3chartcontainercbsank
 
     This value defines only the selected year when the page loads: the user can easily change the selected year by clicking the corresponding buttons. Also, the user can select more than one year.
 
--   **`data-fund`**: defines the selected fund when the page loads. For not selecting any country set the value to `"none"`, or just leave it empty:
+-   **`data-cbpf`**: defines the selected fund when the page loads. For not selecting any country set the value to `"none"`, or just leave it empty:
 
     `""`
 
@@ -59,6 +63,13 @@ The code retrieves data attributes in a `<div>` with `id="d3chartcontainercbsank
     For more than one country separate the values with commas, such as:
 
     `"Yemen, Sudan, Iraq"`.
+
+-   **data-aggregate**: defines how the third level in the sankey diagram will be aggregated. Accepted values:
+
+    -   `"level"`: aggregates the values by level, that is, implementing vs sub-implementing partners.
+    -   `"type"`: aggregates the values by partner type, each one with a breakdown for partner level.
+
+    If the value is neither `"true"` nor `"false"`, it defaults to `"type"`.
 
 -   **data-minpercentage**: defines the minimum value for under approval allocations percentage. If the under approval allocations percentage is above this minimum, _Total USD planned_ values are used for the visual, otherwise _Total Approved Budget_ values are used (refer to the data APIs).
 
@@ -97,7 +108,7 @@ Javascript, without JSDoc annotations
 The code loads three CSS files:
 
 -   https://cbpfgms.github.io/css/d3chartstyles.css: contains general styles, used by other visuals.
--   https://cbpfgms.github.io/css/d3chartstylescbsank.css: contains styles for this dataviz.
+-   https://cbpfgms.github.io/css/d3chartstylespbinad.css: contains styles for this dataviz.
 -   https://use.fontawesome.com/releases/v5.6.3/css/all.css: FontAwesome styles.
 
 ### Libraries
@@ -114,18 +125,18 @@ The code loads three CSS files:
 
 #### Data APIs:
 
--   Contributions data: https://cbpfgms.github.io/pfbi-data/contributionSummarySankey.csv
 -   Allocations data: https://cbpfapi.unocha.org/vo2/odata/AllocationTypes?PoolfundCodeAbbrv=&$format=csv
+-   Implementing vs sub-implementing data: https://cbpfapi.unocha.org/vo2/odata/AllocationFlowByOrgType?PoolfundCodeAbbrv=&$format=csv
 
 #### Master Tables:
 
--   Donors: https://cbpfgms.github.io/pfbi-data/mst/MstDonor.json
--   Funds: https://cbpfgms.github.io/pfbi-data/mst/MstCountry.json
--   Allocation sources: https://cbpfgms.github.io/pfbi-data/mst/MstAllocation.json
+-   Funds: https://cbpfapi.unocha.org/vo2/odata/MstPooledFund?$format=csv
+-   Partners: https://cbpfapi.unocha.org/vo2/odata/MstOrgType?$format=csv
+-   Sub-implementing partners: https://cbpfapi.unocha.org/vo2/odata/SubIPType?$format=csv
 
 ## Notes
 
 This dataviz can be embedded in any page, the code automatically fetches all data, master tables, libraries and style sheets needed.
 Just copy/paste the following snippet:
 
-`<div id="d3chartcontainercbsank" data-title="" data-year="" data-fund="" data-minpercentage="3" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/cbsank/src/d3chartcbsank.js"></script>`
+`<div id="d3chartcontainerpbinad" data-title="Allocation flow (net funding)" data-year="2023" data-cbpf="all" data-aggregate="type" data-minpercentage="3" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbinad/src/d3chartpbinad-stg.js"></script>`
