@@ -6,7 +6,7 @@ Data visualisation hosted at: https://cbpf.data.unocha.org/#allocation_heading
 
 ### Purpose
 
-**Allocation flow** is a data visualization that shows the values allocated for each fund in the selected period.
+**Allocations** is a data visualization that shows the values allocated for each fund in the selected period.
 
 The chart also shows a breakdown of the allocated amount in the selection by partner type (National NGO, International NGO, UN Agency, Red Cross/Red Crescent Society).
 
@@ -92,7 +92,7 @@ The user can easily change this selection by clicking the "Net Funding" checkbox
 
 If the value is neither `"true"` nor `"false"`, it defaults to `"false"`.
 
--   **data-minpercentage**: defines the minimum value for under approval allocations percentage. If the under approval allocations percentage is above this minimum, _Total USD planned_ values are used for the visual, otherwise _Total Approved Budget_ values are used (refer to the data APIs).
+-   **`data-minpercentage`**: defines the minimum value for under approval allocations percentage. If the under approval allocations percentage is above this minimum, _Total USD planned_ values are used for the visual, otherwise _Total Approved Budget_ values are used (refer to the data APIs).
 
 -   **`data-responsive`**: defines if the SVG stretches to the width of the containing element. Accepted values:
 
@@ -106,14 +106,14 @@ If the value is neither `"true"` nor `"false"`, it defaults to `"false"`.
 
     If the value is neither `"true"` nor `"false"`, it defaults to `"false"`.
 
--   **data-showhelp**: shows the annotations explaining how to use the data visualisation. Accepted values:
+-   **`data-showhelp`**: shows the annotations explaining how to use the data visualisation. Accepted values:
 
     -   `"true":` annotations shown when the page loads.
     -   `"false":` annotations not shown when the page loads. The user can easily show the annotations by clicking the "help" button.
 
     If the value is neither `"true"` nor `"false"`, it defaults to `"false"`.
 
--   **data-showlink**: shows the "for more information" link in the footer. Accepted values:
+-   **`data-showlink`**: shows the "for more information" link in the footer. Accepted values:
 
     -   `"true":` shows the link.
     -   `"false":` doesn't show the link.
@@ -157,4 +157,4 @@ The code loads three CSS files:
 This dataviz can be embedded in any page, the code automatically fetches all data, master tables, libraries and style sheets needed.
 Just copy/paste the following snippet:
 
-`<div id="d3chartcontainerpbialp" data-title="Allocations by Organization Type" data-year="2024" data-minpercentage="3" data-partner="total" data-showaverage="true" data-selectedcbpfs="none" data-netfunding="true" data-responsive="true" data-lazyload="true" data-showhelp="false" data-showlink="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbialp/src/d3chartpbialp-stg.js"></script>`
+`<div id="d3chartcontainerpbialp" data-title="Allocations by Organization Type" data-year="2024" data-minpercentage="3" data-partner="total" data-showaverage="true" data-selectedcbpfs="none" data-netfunding="true" data-responsive="true" data-lazyload="true" data-showhelp="false" data-showlink="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbialp/src/d3chartpbialp.js"></script>`

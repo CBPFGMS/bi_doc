@@ -15,16 +15,17 @@ This repository contains the documentation for all data visualisations, as well 
 -   [CBPF by year](./Dataviz/CBPF-Data-Hub/CBPF-by-year.md)
 -   [Allocation flow](./Dataviz/CBPF-Data-Hub/Allocation-flow.md)
 -   [Allocations](./Dataviz/CBPF-Data-Hub/Allocations.md)
--   Contributions:
--   Contribution trends:
--   Funding overview:
--   Sectors:
--   Targeted and reached people:
--   Gender with age marker:
--   Allocations overview:
--   Results dashboard:
--   Progress dashboard:
--   CBPF vs HRP
+-   [Allocations timeline](./Dataviz/CBPF-Data-Hub/Allocations-timeline.md)
+-   [Contributions](./Dataviz/CBPF-Data-Hub/Contributions.md)
+-   [Contribution trends](./Dataviz/CBPF-Data-Hub/.md)
+-   [Funding overview](./Dataviz/CBPF-Data-Hub/.md)
+-   [Sectors](./Dataviz/CBPF-Data-Hub/.md)
+-   [Targeted and reached people](./Dataviz/CBPF-Data-Hub/.md)
+-   [Gender with age marker](./Dataviz/CBPF-Data-Hub/.md)
+-   [Allocations overview](./Dataviz/CBPF-Data-Hub/.md)
+-   [Results dashboard](./Dataviz/CBPF-Data-Hub/.md)
+-   [Progress dashboard](./Dataviz/CBPF-Data-Hub/.md)
+-   [CBPF vs HRP](./Dataviz/CBPF-Data-Hub/.md)
 
 ### CERF Data Hub
 

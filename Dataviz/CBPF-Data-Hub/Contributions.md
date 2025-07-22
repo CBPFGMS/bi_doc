@@ -1,18 +1,16 @@
-# CBPF by year
+# Contributions
 
-Data visualisation hosted at: https://cbpf.data.unocha.org/?#byyear_heading
+Data visualisation hosted at: https://cbpf.data.unocha.org/#contribution_heading
 
 ## Introduction
 
 ### Purpose
 
-**CBPF by year** is a mixed chart that shows both contributions and allocations, having as the central point those two totals. The contributions are divided by donors, and the allocations are divided on the first level in Standard and Reserve. For both allocation sources, the second level divides those values by funds.
-
-This dataviz allows a the user to quickly compare the contributions and allocations figures, as well as comparing the breakdown for donors (contributions) and allocation sources plus funds (allocations).
+**Contributions** is a data visualization that shows, for a selected period, the amount donated by all donors, as well as the amount earmarked for all funds. It allows a quick visual ranking and sorting of both donors and funds regarding donations.
 
 ### Data encoding
 
-This charts uses a sankey diagram for depicting the contribution and allocation values. The width of each ribbon encodes the total donated/allocated.
+This data visualization consists in two separated lollipop charts, one for the donors on the left hand side and another one for the funds on the right hand side. The length of each lollipop depicts the amount donated/earmarked.
 
 ### Interactivity
 
@@ -24,17 +22,17 @@ This charts uses a sankey diagram for depicting the contribution and allocation 
     - **Csv**: downloads the data as a .csv file;
     - **Help**: shows an annotated layer with tips about how to use and how to understand the chart.
 
-2. The _Select CBPF_ checkboxes allow filtering by fund.
+2. The year buttons select the year depicted in the dataviz. Multiple years can be selected by double-clicking or pressing ALT while clicking.
 
-3. The year buttons select the year depicted in the dataviz. Multiple years can be selected by double-clicking or pressing ALT while clicking.
+3. Hovering over a donor on the left hand side lollipop filters the funds on the right hand side for donations from that donor only. Clicking on the donor maintains the selection (clicking again deselects), which is useful for selecting more than one donor.
 
 ## Technical aspects
 
 ### Data attributes
 
-The code retrieves data attributes in a `<div>` with `id="d3chartcontainercbsank"`. These data attributes are:
+The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbiclc"`. These data attributes are:
 
--   **`data-title`**: sets the title of the chart. If left empty the chart title defaults to _CBPF By Year_.
+-   **`data-title`**: sets the title of the chart. If left empty the chart title defaults to _CBPF Contributions_.
 
 -   **`data-year`**: defines the year depicted by the data visualisation when the page loads. The value has to be a string containing the year with century as a decimal number, such as:
 
@@ -48,7 +46,15 @@ The code retrieves data attributes in a `<div>` with `id="d3chartcontainercbsank
 
     This value defines only the selected year when the page loads: the user can easily change the selected year by clicking the corresponding buttons. Also, the user can select more than one year.
 
--   **`data-fund`**: defines the selected fund when the page loads. For not selecting any country set the value to `"none"`, or just leave it empty:
+-   **`data-contribution`**: defines the contribution type depicted by the data visualisation when the page loads. The value has to be a string. Accepted values:
+
+    -   `"total"`: shows the total contributions (paid + pledge).
+    -   `"paid"`: shows only the paid contributions.
+    -   `"pledge"`: shows only the pledged values.
+
+    If the value is not an accepted value, it defaults to `"total"`.
+
+-   **`data-selectedcountry`**: defines the selected country (donor or CBPF) when the page loads. For not selecting any country set the value to `"none"`, or just leave it empty:
 
     `""`
 
@@ -60,7 +66,11 @@ The code retrieves data attributes in a `<div>` with `id="d3chartcontainercbsank
 
     `"Yemen, Sudan, Iraq"`.
 
--   **`data-minpercentage`**: defines the minimum value for under approval allocations percentage. If the under approval allocations percentage is above this minimum, _Total USD planned_ values are used for the visual, otherwise _Total Approved Budget_ values are used (refer to the data APIs).
+    In such cases, the list must contain only donors or only CBPFs.
+
+    If the selected country is both a donor and a CBPF, define which one will be selected by using `"@"` followed by `"donor"` or `"fund"`. For instance, `"Ukraine@donor"` will select Ukraine as a donor, while `"Ukraine@fund"` will select Ukraine as a fund. If the selected country is both a donor and a CBPF but there is no indication regarding which one should be selected (`"@fund"` or `"@donor"`), the value will default to `"none"`.
+
+    For the accepted values, please refer to the data API. If the value is not a valid one it defaults to `"none"`. This value defines only the selected country when the page loads: the CBPFs (and donors) can be easily selected by clicking on the lollipops.
 
 -   **`data-responsive`**: defines if the SVG stretches to the width of the containing element. Accepted values:
 
@@ -97,13 +107,12 @@ Javascript, without JSDoc annotations
 The code loads three CSS files:
 
 -   https://cbpfgms.github.io/css/d3chartstyles.css: contains general styles, used by other visuals.
--   https://cbpfgms.github.io/css/d3chartstylescbsank.css: contains styles for this dataviz.
+-   https://cbpfgms.github.io/css/d3chartstylespbiclc.css: contains styles for this dataviz.
 -   https://use.fontawesome.com/releases/v5.6.3/css/all.css: FontAwesome styles.
 
 ### Libraries
 
 -   d3.js, version 5.16. Source: https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js
--   d3-sankey, version 0.12. Source: https://cdnjs.cloudflare.com/ajax/libs/d3-sankey/0.12.3/d3-sankey.js
 -   html2canvas, version 1.0.0-rc.1. Source: https://cbpfgms.github.io/libraries/html2canvas.min.js
 -   jsPdf, version 1.5. Source: https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js
 -   Polyfills for old browsers: https://cdn.jsdelivr.net/npm/@ungap/url-search-params@0.1.2/min.min.js,
@@ -114,18 +123,19 @@ The code loads three CSS files:
 
 #### Data APIs:
 
--   Contributions data: https://cbpfgms.github.io/pfbi-data/contributionSummarySankey.csv
--   Allocations data: https://cbpfapi.unocha.org/vo2/odata/AllocationTypes?PoolfundCodeAbbrv=&$format=csv
+-   Contributions data: https://cbpfapi.unocha.org/vo2/odata/ContributionTotal?$format=csv&ShowAllPooledFunds=1
 
 #### Master Tables:
 
--   Donors: https://cbpfgms.github.io/pfbi-data/mst/MstDonor.json
--   Funds: https://cbpfgms.github.io/pfbi-data/mst/MstCountry.json
--   Allocation sources: https://cbpfgms.github.io/pfbi-data/mst/MstAllocation.json
+-   Regional funds: https://cbpfgms.github.io/pfbi-data/mst/MstRhpf.json
+
+#### Other:
+
+-   Donor flags: https://cbpfgms.github.io/img/assets/flags24.json
 
 ## Notes
 
 This dataviz can be embedded in any page, the code automatically fetches all data, master tables, libraries and style sheets needed.
 Just copy/paste the following snippet:
 
-`<div id="d3chartcontainercbsank" data-title="" data-year="" data-fund="" data-minpercentage="3" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/cbsank/src/d3chartcbsank.js"></script>`
+`<div id="d3chartcontainerpbiclc" data-title="CBPF Contributions" data-year="2018" data-contribution="total" data-selectedcountry="none" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbiclc/src/d3chartpbiclc.js"></script>`

@@ -1,18 +1,18 @@
-# CBPF by year
+# Allocations timeline
 
-Data visualisation hosted at: https://cbpf.data.unocha.org/?#byyear_heading
+Data visualisation hosted at: https://cbpf.data.unocha.org/#allocationtimeline_heading
 
 ## Introduction
 
 ### Purpose
 
-**CBPF by year** is a mixed chart that shows both contributions and allocations, having as the central point those two totals. The contributions are divided by donors, and the allocations are divided on the first level in Standard and Reserve. For both allocation sources, the second level divides those values by funds.
+**Allocations timeline** is a data visualization that shows a timeline of allocations for all funds, allowing the user to visualize the start and end of each allocation, and to quickly scan the allocations for a selected period.
 
-This dataviz allows a the user to quickly compare the contributions and allocations figures, as well as comparing the breakdown for donors (contributions) and allocation sources plus funds (allocations).
+The chart also shows a breakdown of planned, ongoing and closed allocations for the selected period.
 
 ### Data encoding
 
-This charts uses a sankey diagram for depicting the contribution and allocation values. The width of each ribbon encodes the total donated/allocated.
+This data visualization is a modified Gantt chart, with time in the x axis and the funds as the categorical variable in the y axis. At the top of the Gantt chart there is a panel that allows brushing, where the user can drag the two handles (left and right) to specify the selected period.
 
 ### Interactivity
 
@@ -24,17 +24,19 @@ This charts uses a sankey diagram for depicting the contribution and allocation 
     - **Csv**: downloads the data as a .csv file;
     - **Help**: shows an annotated layer with tips about how to use and how to understand the chart.
 
-2. The _Select CBPF_ checkboxes allow filtering by fund.
+2. The year buttons select the year depicted in the dataviz. Multiple years can be selected by double-clicking or pressing ALT while clicking.
 
-3. The year buttons select the year depicted in the dataviz. Multiple years can be selected by double-clicking or pressing ALT while clicking.
+3. The brush selection panel allows the user to specify a custom time period, when the year buttons are not enough. For using the brush panel, drag the handles left or right, highlighting the selected period and changing the chart below it.
+
+4. Hovering over a project displays a tooltip with its general info, and a _Display details_ button shows detailed information for the project below the chart area.
 
 ## Technical aspects
 
 ### Data attributes
 
-The code retrieves data attributes in a `<div>` with `id="d3chartcontainercbsank"`. These data attributes are:
+The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbiuac"`. These data attributes are:
 
--   **`data-title`**: sets the title of the chart. If left empty the chart title defaults to _CBPF By Year_.
+-   **`data-title`**: sets the title of the chart. If left empty the chart title defaults to _Allocations Timeline_.
 
 -   **`data-year`**: defines the year depicted by the data visualisation when the page loads. The value has to be a string containing the year with century as a decimal number, such as:
 
@@ -47,20 +49,6 @@ The code retrieves data attributes in a `<div>` with `id="d3chartcontainercbsank
     `"2016, 2017, 2018"`
 
     This value defines only the selected year when the page loads: the user can easily change the selected year by clicking the corresponding buttons. Also, the user can select more than one year.
-
--   **`data-fund`**: defines the selected fund when the page loads. For not selecting any country set the value to `"none"`, or just leave it empty:
-
-    `""`
-
-    For individual countries set the value accordingly, such as:
-
-    `"Yemen"`.
-
-    For more than one country separate the values with commas, such as:
-
-    `"Yemen, Sudan, Iraq"`.
-
--   **`data-minpercentage`**: defines the minimum value for under approval allocations percentage. If the under approval allocations percentage is above this minimum, _Total USD planned_ values are used for the visual, otherwise _Total Approved Budget_ values are used (refer to the data APIs).
 
 -   **`data-responsive`**: defines if the SVG stretches to the width of the containing element. Accepted values:
 
@@ -97,13 +85,12 @@ Javascript, without JSDoc annotations
 The code loads three CSS files:
 
 -   https://cbpfgms.github.io/css/d3chartstyles.css: contains general styles, used by other visuals.
--   https://cbpfgms.github.io/css/d3chartstylescbsank.css: contains styles for this dataviz.
+-   https://cbpfgms.github.io/css/d3chartstylespbiuac.css: contains styles for this dataviz.
 -   https://use.fontawesome.com/releases/v5.6.3/css/all.css: FontAwesome styles.
 
 ### Libraries
 
 -   d3.js, version 5.16. Source: https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js
--   d3-sankey, version 0.12. Source: https://cdnjs.cloudflare.com/ajax/libs/d3-sankey/0.12.3/d3-sankey.js
 -   html2canvas, version 1.0.0-rc.1. Source: https://cbpfgms.github.io/libraries/html2canvas.min.js
 -   jsPdf, version 1.5. Source: https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js
 -   Polyfills for old browsers: https://cdn.jsdelivr.net/npm/@ungap/url-search-params@0.1.2/min.min.js,
@@ -114,18 +101,15 @@ The code loads three CSS files:
 
 #### Data APIs:
 
--   Contributions data: https://cbpfgms.github.io/pfbi-data/contributionSummarySankey.csv
 -   Allocations data: https://cbpfapi.unocha.org/vo2/odata/AllocationTypes?PoolfundCodeAbbrv=&$format=csv
 
 #### Master Tables:
 
--   Donors: https://cbpfgms.github.io/pfbi-data/mst/MstDonor.json
--   Funds: https://cbpfgms.github.io/pfbi-data/mst/MstCountry.json
--   Allocation sources: https://cbpfgms.github.io/pfbi-data/mst/MstAllocation.json
+No master table used.
 
 ## Notes
 
 This dataviz can be embedded in any page, the code automatically fetches all data, master tables, libraries and style sheets needed.
 Just copy/paste the following snippet:
 
-`<div id="d3chartcontainercbsank" data-title="" data-year="" data-fund="" data-minpercentage="3" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/cbsank/src/d3chartcbsank.js"></script>`
+`<div id="d3chartcontainerpbiuac" data-title="Allocations Timeline" data-year="2022" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbiuac/src/d3chartpbiuac.js"></script>`

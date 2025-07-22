@@ -64,14 +64,14 @@ The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbinad
 
     `"Yemen, Sudan, Iraq"`.
 
--   **data-aggregate**: defines how the third level in the sankey diagram will be aggregated. Accepted values:
+-   **`data-aggregate`**: defines how the third level in the sankey diagram will be aggregated. Accepted values:
 
     -   `"level"`: aggregates the values by level, that is, implementing vs sub-implementing partners.
     -   `"type"`: aggregates the values by partner type, each one with a breakdown for partner level.
 
     If the value is neither `"true"` nor `"false"`, it defaults to `"type"`.
 
--   **data-minpercentage**: defines the minimum value for under approval allocations percentage. If the under approval allocations percentage is above this minimum, _Total USD planned_ values are used for the visual, otherwise _Total Approved Budget_ values are used (refer to the data APIs).
+-   **`data-minpercen`tage**: defines the minimum value for under approval allocations percentage. If the under approval allocations percentage is above this minimum, _Total USD planned_ values are used for the visual, otherwise _Total Approved Budget_ values are used (refer to the data APIs).
 
 -   **`data-responsive`**: defines if the SVG stretches to the width of the containing element. Accepted values:
 
@@ -85,14 +85,14 @@ The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbinad
 
     If the value is neither `"true"` nor `"false"`, it defaults to `"false"`.
 
--   **data-showhelp**: shows the annotations explaining how to use the data visualisation. Accepted values:
+-   \*_`data-showhelp_`\*: shows the annotations explaining how to use the data visualisation. Accepted values:
 
     -   `"true":` annotations shown when the page loads.
     -   `"false":` annotations not shown when the page loads. The user can easily show the annotations by clicking the "help" button.
 
     If the value is neither `"true"` nor `"false"`, it defaults to `"false"`.
 
--   **data-showlink**: shows the "for more information" link in the footer. Accepted values:
+-   \*_`data-showlink_`\*: shows the "for more information" link in the footer. Accepted values:
 
     -   `"true":` shows the link.
     -   `"false":` doesn't show the link.
@@ -139,4 +139,4 @@ The code loads three CSS files:
 This dataviz can be embedded in any page, the code automatically fetches all data, master tables, libraries and style sheets needed.
 Just copy/paste the following snippet:
 
-`<div id="d3chartcontainerpbinad" data-title="Allocation flow (net funding)" data-year="2023" data-cbpf="all" data-aggregate="type" data-minpercentage="3" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbinad/src/d3chartpbinad-stg.js"></script>`
+`<div id="d3chartcontainerpbinad" data-title="Allocation flow (net funding)" data-year="2023" data-cbpf="all" data-aggregate="type" data-minpercentage="3" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbinad/src/d3chartpbinad.js"></script>`
