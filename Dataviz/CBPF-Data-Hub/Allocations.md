@@ -2,6 +2,8 @@
 
 Data visualisation hosted at: https://cbpf.data.unocha.org/#allocation_heading
 
+Data visualization in the staging site: https://cbpfgms.github.io/cbpf-bi-stag/#allocation_heading
+
 ## Introduction
 
 ### Purpose
@@ -33,6 +35,12 @@ This data visualization actually contains two visual encodings: on the left hand
 5. Next to the _Net funding_ checkbox, a _Show total_ checkbox allows the user to visualize the breakdown by partner type for all funds, regardless the user selection.
 
 ## Technical aspects
+
+### Source code
+
+-   Production: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbialp/src/d3chartpbialp.js
+
+-   Staging: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbialp/src/d3chartpbialp-stg.js
 
 ### Data attributes
 
@@ -157,4 +165,4 @@ The code loads three CSS files:
 This dataviz can be embedded in any page, the code automatically fetches all data, master tables, libraries and style sheets needed.
 Just copy/paste the following snippet:
 
-`<div id="d3chartcontainerpbialp" data-title="Allocations by Organization Type" data-year="2024" data-minpercentage="3" data-partner="total" data-showaverage="true" data-selectedcbpfs="none" data-netfunding="true" data-responsive="true" data-lazyload="true" data-showhelp="false" data-showlink="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbialp/src/d3chartpbialp.js"></script>`
+`<div id="d3chartcontainerpbialp" data-title="Allocations by Organization Type" data-year="2025" data-minpercentage="3" data-partner="total" data-showaverage="true" data-selectedcbpfs="none" data-netfunding="true" data-responsive="true" data-lazyload="true" data-showhelp="false" data-showlink="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbialp/src/d3chartpbialp.js"></script>`

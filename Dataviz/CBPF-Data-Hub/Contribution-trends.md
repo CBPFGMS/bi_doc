@@ -1,18 +1,20 @@
-# Contributions
+# Contribution trends
 
-Data visualisation hosted at: https://cbpf.data.unocha.org/#contribution_heading
+Data visualisation hosted at: https://cbpf.data.unocha.org/#contributiontrend_heading
 
-Data visualization in the staging site: https://cbpfgms.github.io/cbpf-bi-stag/#contribution_heading
+Data visualization in the staging site: https://cbpfgms.github.io/cbpf-bi-stag/#contributiontrend_heading
 
 ## Introduction
 
 ### Purpose
 
-**Contributions** is a data visualization that shows, for a selected period, the amount donated by all donors, as well as the amount earmarked for all funds. It allows a quick visual ranking and sorting of both donors and funds regarding donations.
+**Contribution trends** is a data visualization that shows how the contributions from donors vary along the years, as well as the earmarked values for each fund. The chart allows the user to capture the temporal trends for both donors' contributions and funds' earmarked values.
 
 ### Data encoding
 
-This data visualization consists in two separated lollipop charts, one for the donors on the left hand side and another one for the funds on the right hand side. The length of each lollipop depicts the amount donated/earmarked.
+This data visualization consists in two separated line charts, one for the donors on the left hand side and another one for the funds on the right hand side. The vertical position of each point in the line represents the total donated/earmarked, and the horizontal position depicts time.
+
+The current year is left purposely separated from the lines, as a pulsing dot, to indicate that the value is constantly changing and do not represent the total for the year.
 
 ### Interactivity
 
@@ -24,43 +26,31 @@ This data visualization consists in two separated lollipop charts, one for the d
     - **Csv**: downloads the data as a .csv file;
     - **Help**: shows an annotated layer with tips about how to use and how to understand the chart.
 
-2. The year buttons select the year depicted in the dataviz. Multiple years can be selected by double-clicking or pressing ALT while clicking.
+2. On the donors area, the first dropdown allows the user to select all donors, the top 5 donors or an individual donor. The selection can be cleared clicking the labels on top of the chart.
 
-3. Hovering over a donor on the left hand side lollipop filters the funds on the right hand side for donations from that donor only. Clicking on the donor maintains the selection (clicking again deselects), which is useful for selecting more than one donor.
+3. On the donors area, the second dropdown allows selecting donors by their currencies.
+
+4. On the donors area, two radio buttons allow the user to see the donations in USD or in the local currency of the donor.
+
+5. On the funds area, a dropdown allows the user to select a fund, which shows all the fund's donors on the donors area. The selection can be cleared clicking the labels on top of the chart.
+
+6. For each selection (donor or fund), checkboxes on the opposite side allow the user to filter the values displayed.
+
+7. Hovering over the lines brings detailed values for the corresponding year.
 
 ## Technical aspects
 
 ### Source code
 
--   Production: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbiclc/src/d3chartpbiclc.js
+-   Production: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbicli/src/d3chartpbicli.js
 
--   Staging: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbiclc/src/d3chartpbiclc-stg.js
+-   Staging: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbicli/src/d3chartpbicli-stg.js
 
 ### Data attributes
 
-The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbiclc"`. These data attributes are:
+The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbicli"`. These data attributes are:
 
--   **`data-title`**: sets the title of the chart. If left empty the chart title defaults to _CBPF Contributions_.
-
--   **`data-year`**: defines the year depicted by the data visualisation when the page loads. The value has to be a string containing the year with century as a decimal number, such as:
-
-    `"2018"`
-
-    If the provided value is not a valid number the datavis will default to the current year. For the accepted values for the years please refer to the data API.
-
-    Multiple years are allowed. In this case, the values have to be separated by comma, for instance:
-
-    `"2016, 2017, 2018"`
-
-    This value defines only the selected year when the page loads: the user can easily change the selected year by clicking the corresponding buttons. Also, the user can select more than one year.
-
--   **`data-contribution`**: defines the contribution type depicted by the data visualisation when the page loads. The value has to be a string. Accepted values:
-
-    -   `"total"`: shows the total contributions (paid + pledge).
-    -   `"paid"`: shows only the paid contributions.
-    -   `"pledge"`: shows only the pledged values.
-
-    If the value is not an accepted value, it defaults to `"total"`.
+-   **`data-title`**: sets the title of the chart. If left empty the chart title defaults to _Contribution Trends_.
 
 -   **`data-selectedcountry`**: defines the selected country (donor or CBPF) when the page loads. For not selecting any country set the value to `"none"`, or just leave it empty:
 
@@ -115,7 +105,7 @@ Javascript, without JSDoc annotations
 The code loads three CSS files:
 
 -   https://cbpfgms.github.io/css/d3chartstyles.css: contains general styles, used by other visuals.
--   https://cbpfgms.github.io/css/d3chartstylespbiclc.css: contains styles for this dataviz.
+-   https://cbpfgms.github.io/css/d3chartstylespbicli.css: contains styles for this dataviz.
 -   https://use.fontawesome.com/releases/v5.6.3/css/all.css: FontAwesome styles.
 
 ### Libraries
@@ -135,7 +125,7 @@ The code loads three CSS files:
 
 #### Master Tables:
 
--   Regional funds: https://cbpfgms.github.io/pfbi-data/mst/MstRhpf.json
+No master table used.
 
 #### Other:
 
@@ -146,4 +136,4 @@ The code loads three CSS files:
 This dataviz can be embedded in any page, the code automatically fetches all data, master tables, libraries and style sheets needed.
 Just copy/paste the following snippet:
 
-`<div id="d3chartcontainerpbiclc" data-title="CBPF Contributions" data-year="2025" data-contribution="total" data-selectedcountry="none" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbiclc/src/d3chartpbiclc.js"></script>`
+`<div id="d3chartcontainerpbicli" data-title="Contribution Trends" data-selectedcountry="none" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbicli/src/d3chartpbicli.js"></script>`

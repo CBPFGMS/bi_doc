@@ -1,18 +1,18 @@
-# Contributions
+# Targeted and reached people
 
-Data visualisation hosted at: https://cbpf.data.unocha.org/#contribution_heading
+Data visualisation hosted at: https://cbpf.data.unocha.org/#clustertrend_heading
 
-Data visualization in the staging site: https://cbpfgms.github.io/cbpf-bi-stag/#contribution_heading
+Data visualization in the staging site: https://cbpfgms.github.io/cbpf-bi-stag/#clustertrend_heading
 
 ## Introduction
 
 ### Purpose
 
-**Contributions** is a data visualization that shows, for a selected period, the amount donated by all donors, as well as the amount earmarked for all funds. It allows a quick visual ranking and sorting of both donors and funds regarding donations.
+**Targeted and reached people** is a data visualization that shows how many of each beneficiary type (women, girls, men and boys) were benefited for a given year selection. The chart also shows the percentage of targeted people that was reached, for each beneficiary type.
 
 ### Data encoding
 
-This data visualization consists in two separated lollipop charts, one for the donors on the left hand side and another one for the funds on the right hand side. The length of each lollipop depicts the amount donated/earmarked.
+This data visualization consists in two different visual encodings. On the left hand side, an _100 percent_ bar chart indicates the percentage of targeted people that was effectively reached, for each beneficiary type. Percentages greater than 100% are indicated only in the label, since 100% is the maximum width of the bars. On the right hand side a pictogram chart allows the user to see the real numbers for each beneficiary type, which allows ranking and comparing.
 
 ### Interactivity
 
@@ -24,23 +24,25 @@ This data visualization consists in two separated lollipop charts, one for the d
     - **Csv**: downloads the data as a .csv file;
     - **Help**: shows an annotated layer with tips about how to use and how to understand the chart.
 
-2. The year buttons select the year depicted in the dataviz. Multiple years can be selected by double-clicking or pressing ALT while clicking.
+2. The _Select CBPF_ checkboxes allow filtering by fund.
 
-3. Hovering over a donor on the left hand side lollipop filters the funds on the right hand side for donations from that donor only. Clicking on the donor maintains the selection (clicking again deselects), which is useful for selecting more than one donor.
+3. The year buttons select the year depicted in the dataviz. Multiple years can be selected by double-clicking or pressing ALT while clicking.
+
+4. Hovering over either the bar chart or the pictogram chart brings a tooltip with detailed figures.
 
 ## Technical aspects
 
 ### Source code
 
--   Production: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbiclc/src/d3chartpbiclc.js
+-   Production: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbiobe/src/d3chartpbiobe.js
 
--   Staging: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbiclc/src/d3chartpbiclc-stg.js
+-   Staging: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbiobe/src/d3chartpbiobe-stg.js
 
 ### Data attributes
 
-The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbiclc"`. These data attributes are:
+The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbiobe"`. These data attributes are:
 
--   **`data-title`**: sets the title of the chart. If left empty the chart title defaults to _CBPF Contributions_.
+-   **`data-title`**: sets the title of the chart. If left empty the chart title defaults to _Contributions flow_.
 
 -   **`data-year`**: defines the year depicted by the data visualisation when the page loads. The value has to be a string containing the year with century as a decimal number, such as:
 
@@ -54,31 +56,17 @@ The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbiclc
 
     This value defines only the selected year when the page loads: the user can easily change the selected year by clicking the corresponding buttons. Also, the user can select more than one year.
 
--   **`data-contribution`**: defines the contribution type depicted by the data visualisation when the page loads. The value has to be a string. Accepted values:
-
-    -   `"total"`: shows the total contributions (paid + pledge).
-    -   `"paid"`: shows only the paid contributions.
-    -   `"pledge"`: shows only the pledged values.
-
-    If the value is not an accepted value, it defaults to `"total"`.
-
--   **`data-selectedcountry`**: defines the selected country (donor or CBPF) when the page loads. For not selecting any country set the value to `"none"`, or just leave it empty:
-
-    `""`
-
-    For individual countries set the value accordingly, such as:
+-   **`data-cbpf`**: defines the selected CBPFs when the page loads. For showing all CBPFs, set the value to `"all"`. For individual CBPFs set the value accordingly, such as:
 
     `"Yemen"`.
 
-    For more than one country separate the values with commas, such as:
+    For more than one CBPF separate the values with commas, such as:
 
     `"Yemen, Sudan, Iraq"`.
 
-    In such cases, the list must contain only donors or only CBPFs.
+    For the accepted values, please refer to the data API.
 
-    If the selected country is both a donor and a CBPF, define which one will be selected by using `"@"` followed by `"donor"` or `"fund"`. For instance, `"Ukraine@donor"` will select Ukraine as a donor, while `"Ukraine@fund"` will select Ukraine as a fund. If the selected country is both a donor and a CBPF but there is no indication regarding which one should be selected (`"@fund"` or `"@donor"`), the value will default to `"none"`.
-
-    For the accepted values, please refer to the data API. If the value is not a valid one it defaults to `"none"`. This value defines only the selected country when the page loads: the CBPFs (and donors) can be easily selected by clicking on the lollipops.
+    If the value is not a valid one it defaults to `"all"`.
 
 -   **`data-responsive`**: defines if the SVG stretches to the width of the containing element. Accepted values:
 
@@ -115,7 +103,7 @@ Javascript, without JSDoc annotations
 The code loads three CSS files:
 
 -   https://cbpfgms.github.io/css/d3chartstyles.css: contains general styles, used by other visuals.
--   https://cbpfgms.github.io/css/d3chartstylespbiclc.css: contains styles for this dataviz.
+-   https://cbpfgms.github.io/css/d3chartstylespbiobe.css: contains styles for this dataviz.
 -   https://use.fontawesome.com/releases/v5.6.3/css/all.css: FontAwesome styles.
 
 ### Libraries
@@ -131,19 +119,17 @@ The code loads three CSS files:
 
 #### Data APIs:
 
--   Contributions data: https://cbpfapi.unocha.org/vo2/odata/ContributionTotal?$format=csv&ShowAllPooledFunds=1
+-   Allocations data: https://cbpfapi.unocha.org/vo2/odata/AllocationTypes?PoolfundCodeAbbrv=&$format=csv
+
+-   Sector and people data: https://cbpfapi.unocha.org/vo2/odata/PoolFundBeneficiarySummary?$format=csv&ShowAllPooledFunds=1
 
 #### Master Tables:
 
--   Regional funds: https://cbpfgms.github.io/pfbi-data/mst/MstRhpf.json
-
-#### Other:
-
--   Donor flags: https://cbpfgms.github.io/img/assets/flags24.json
+No master table used.
 
 ## Notes
 
 This dataviz can be embedded in any page, the code automatically fetches all data, master tables, libraries and style sheets needed.
 Just copy/paste the following snippet:
 
-`<div id="d3chartcontainerpbiclc" data-title="CBPF Contributions" data-year="2025" data-contribution="total" data-selectedcountry="none" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbiclc/src/d3chartpbiclc.js"></script>`
+`<div id="d3chartcontainerpbiobe" data-title="Cluster Overview" data-cbpf="all" data-year="2025" data-modality="total" data-beneficiaries="targeted" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbiobe/src/d3chartpbiobe.js"></script>`

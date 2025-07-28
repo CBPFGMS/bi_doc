@@ -2,6 +2,8 @@
 
 Data visualisation hosted at: https://cbpf.data.unocha.org/?#byyear_heading
 
+Data visualization in the staging site: https://cbpfgms.github.io/cbpf-bi-stag/#byyear_heading
+
 ## Introduction
 
 ### Purpose
@@ -29,6 +31,12 @@ This charts uses a sankey diagram for depicting the contribution and allocation 
 3. The year buttons select the year depicted in the dataviz. Multiple years can be selected by double-clicking or pressing ALT while clicking.
 
 ## Technical aspects
+
+### Source code
+
+-   Production: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/cbsank/src/d3chartcbsank.js
+
+-   Staging: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/cbsank/src/d3chartcbsank-stg.js
 
 ### Data attributes
 
@@ -128,4 +136,4 @@ The code loads three CSS files:
 This dataviz can be embedded in any page, the code automatically fetches all data, master tables, libraries and style sheets needed.
 Just copy/paste the following snippet:
 
-`<div id="d3chartcontainercbsank" data-title="" data-year="" data-fund="" data-minpercentage="3" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/cbsank/src/d3chartcbsank.js"></script>`
+`<div id="d3chartcontainercbsank" data-title="" data-year="2025" data-fund="" data-minpercentage="3" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/cbsank/src/d3chartcbsank.js"></script>`

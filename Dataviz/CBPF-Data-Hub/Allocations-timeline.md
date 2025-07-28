@@ -2,6 +2,8 @@
 
 Data visualisation hosted at: https://cbpf.data.unocha.org/#allocationtimeline_heading
 
+Data visualization in the staging site: https://cbpfgms.github.io/cbpf-bi-stag/#allocationtimeline_heading
+
 ## Introduction
 
 ### Purpose
@@ -31,6 +33,12 @@ This data visualization is a modified Gantt chart, with time in the x axis and t
 4. Hovering over a project displays a tooltip with its general info, and a _Display details_ button shows detailed information for the project below the chart area.
 
 ## Technical aspects
+
+### Source code
+
+-   Production: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbiuac/src/d3chartpbiuac.js
+
+-   Staging: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbiuac/src/d3chartpbiuac-stg.js
 
 ### Data attributes
 
@@ -112,4 +120,4 @@ No master table used.
 This dataviz can be embedded in any page, the code automatically fetches all data, master tables, libraries and style sheets needed.
 Just copy/paste the following snippet:
 
-`<div id="d3chartcontainerpbiuac" data-title="Allocations Timeline" data-year="2022" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbiuac/src/d3chartpbiuac.js"></script>`
+`<div id="d3chartcontainerpbiuac" data-title="Allocations Timeline" data-year="2025" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbiuac/src/d3chartpbiuac.js"></script>`

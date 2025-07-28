@@ -1,6 +1,8 @@
 # Allocation flow
 
-Data visualisation hosted at: https://cbpf.data.unocha.org/#netfunding_heading
+Data visualization hosted at: https://cbpf.data.unocha.org/#netfunding_heading
+
+Data visualization in the staging site: https://cbpfgms.github.io/cbpf-bi-stag/#netfunding_heading
 
 ## Introduction
 
@@ -34,13 +36,19 @@ As the funds may not be transferred to sub-implementing partners, for easiest co
 
 ## Technical aspects
 
+### Source code
+
+-   Production: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbinad/src/d3chartpbinad.js
+
+-   Staging: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbinad/src/d3chartpbinad-stg.js
+
 ### Data attributes
 
 The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbinad"`. These data attributes are:
 
 -   **`data-title`**: sets the title of the chart. If left empty the chart title defaults to _Allocation flow (net funding)_.
 
--   **`data-year`**: defines the year depicted by the data visualisation when the page loads. The value has to be a string containing the year with century as a decimal number, such as:
+-   **`data-year`**: defines the year depicted by the data visualization when the page loads. The value has to be a string containing the year with century as a decimal number, such as:
 
     `"2018"`
 
@@ -85,7 +93,7 @@ The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbinad
 
     If the value is neither `"true"` nor `"false"`, it defaults to `"false"`.
 
--   \*_`data-showhelp_`\*: shows the annotations explaining how to use the data visualisation. Accepted values:
+-   \*_`data-showhelp_`\*: shows the annotations explaining how to use the data visualization. Accepted values:
 
     -   `"true":` annotations shown when the page loads.
     -   `"false":` annotations not shown when the page loads. The user can easily show the annotations by clicking the "help" button.
@@ -139,4 +147,4 @@ The code loads three CSS files:
 This dataviz can be embedded in any page, the code automatically fetches all data, master tables, libraries and style sheets needed.
 Just copy/paste the following snippet:
 
-`<div id="d3chartcontainerpbinad" data-title="Allocation flow (net funding)" data-year="2023" data-cbpf="all" data-aggregate="type" data-minpercentage="3" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbinad/src/d3chartpbinad.js"></script>`
+`<div id="d3chartcontainerpbinad" data-title="Allocation flow (net funding)" data-year="2025" data-cbpf="all" data-aggregate="type" data-minpercentage="3" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbinad/src/d3chartpbinad.js"></script>`
