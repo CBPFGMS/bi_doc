@@ -20,7 +20,7 @@ This data visualization consists in a dot map, with two different encodings: whe
 
 ### Interactivity
 
-1. At the top right corner of the dataviz there are five buttons:
+1. At the top right corner of the dataviz there are four buttons:
 
     - **Share**: copies a link with all the current selections to the clipboard. Use that link to go to the Bookmark page;
     - **Image**: downloads a snapshot of the chart, as a .png file or as a .pdf file. You can also right-click anywhere in the chart to download a snapshot containing the tooltip;
@@ -182,8 +182,6 @@ The code loads three CSS files:
 -   Partners: https://cbpfapi.unocha.org/vo2/odata/MstOrgType?$format=csv
 
 -   Allocation sources: https://cbpfapi.unocha.org/vo2/odata/MstAllocationSource?$format=csv
-
--   Regional funds: https://cbpfgms.github.io/pfbi-data/mst/MstRhpf.json
 
 ## Notes
 

@@ -1,18 +1,18 @@
-# Targeted and reached people
+# CBPF vs HRP
 
-Data visualisation hosted at: https://cbpf.data.unocha.org/#clustertrend_heading
+Data visualisation hosted at: https://cbpf.data.unocha.org/allocations-overview
 
-Data visualization in the staging site: https://cbpfgms.github.io/cbpf-bi-stag/#clustertrend_heading
+Data visualization in the staging site: https://cbpfgms.github.io/cbpf-bi-stag/allocations-overview
 
 ## Introduction
 
 ### Purpose
 
-**Targeted and reached people** is a data visualization that shows how many of each beneficiary type (women, girls, men and boys) were benefited for a given year selection. The chart also shows the percentage of targeted people that was reached, for each beneficiary type.
+**CBPF vs HRP** is a data visualization that shows how targeted and actual CBPF funds compare against HRP requirements and HRP funding. The chart has two components, one grouped bar chart for regular funds and, below it, a similar chart for non-HRP funds (if any).
 
 ### Data encoding
 
-This data visualization consists in two different visual encodings. On the left hand side, an _100 percent_ bar chart indicates the percentage of targeted people that was effectively reached, for each beneficiary type. Percentages greater than 100% are indicated only in the label, since 100% is the maximum width of the bars. On the right hand side a pictogram chart allows the user to see the real numbers for each beneficiary type, which allows ranking and comparing.
+This data visualization consists in a mix of grouped bar charts (for each fund) and stacked bar chart (for HRP requirements and funding), as well as donut charts for depicting percentages.
 
 ### Interactivity
 
@@ -24,25 +24,31 @@ This data visualization consists in two different visual encodings. On the left 
     - **Csv**: downloads the data as a .csv file;
     - **Help**: shows an annotated layer with tips about how to use and how to understand the chart.
 
-2. The _Select CBPF_ checkboxes allow filtering by fund.
+2. The year buttons select the year depicted in the dataviz. Multiple years can be selected by double-clicking or pressing ALT while clicking.
 
-3. The year buttons select the year depicted in the dataviz. Multiple years can be selected by double-clicking or pressing ALT while clicking.
+3. Below the top figures, a series of radio buttons allow sorting the grouped bar chart by:
 
-4. Hovering over either the bar chart or the pictogram chart brings a tooltip with detailed figures.
+    - CBPF Funding
+    - CBPF Percentage of the Target Achieved
+    - HRP Funding
+    - HRP Requirements
+    - Alphabetically
+
+4. Hovering over any grouped bars brings a tooltip with detailed information.
 
 ## Technical aspects
 
 ### Source code
 
--   Production: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbiobe/src/d3chartpbiobe.js
+-   Production: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbihrp/src/d3chartpbihrp.js
 
--   Staging: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbiobe/src/d3chartpbiobe-stg.js
+-   Staging: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbihrp/src/d3chartpbihrp-stg.js
 
 ### Data attributes
 
-The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbiobe"`. These data attributes are:
+The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbihrp"`. These data attributes are:
 
--   **`data-title`**: sets the title of the chart. If left empty the chart title defaults to _Contributions flow_.
+-   **`data-title`**: sets the title of the chart. If left empty the chart title defaults to _Gender with Age Marker (GAM)_.
 
 -   **`data-year`**: defines the year depicted by the data visualisation when the page loads. The value has to be a string containing the year with century as a decimal number, such as:
 
@@ -56,17 +62,16 @@ The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbiobe
 
     This value defines only the selected year when the page loads: the user can easily change the selected year by clicking the corresponding buttons. Also, the user can select more than one year.
 
--   **`data-cbpf`**: defines the selected CBPFs when the page loads. For showing all CBPFs, set the value to `"all"`. For individual CBPFs set the value accordingly, such as:
+-   **`data-sortby`**: defines the criterion for sorting the bars (descending) when the page loads. The value has to be a string. Accepted values:
 
-    `"Yemen"`.
+    -   `"CBPF Funding"`: sorts the bars by CBPF Funding.
+    -   `"cbpfpercentage"`: sorts the bars by the percentage of the target achieved.
+    -   `"hrpfunding"`: sorts the bars by HRP Funding.
+    -   `"hrprequirements"`: sorts the bars by HRP Requirements.
+    -   `"cbpftarget"`: sorts the bars by CBPF Target.
+    -   `"alphabetically"`: sorts the bars alphabetically.
 
-    For more than one CBPF separate the values with commas, such as:
-
-    `"Yemen, Sudan, Iraq"`.
-
-    For the accepted values, please refer to the data API.
-
-    If the value is not a valid one it defaults to `"all"`.
+    If the value is not an accepted value, it defaults to `"CBPF Funding"`.
 
 -   **`data-responsive`**: defines if the SVG stretches to the width of the containing element. Accepted values:
 
@@ -103,7 +108,7 @@ Javascript, without JSDoc annotations
 The code loads three CSS files:
 
 -   https://cbpfgms.github.io/css/d3chartstyles.css: contains general styles, used by other visuals.
--   https://cbpfgms.github.io/css/d3chartstylespbiobe.css: contains styles for this dataviz.
+-   https://cbpfgms.github.io/css/d3chartstylespbihrp.css: contains styles for this dataviz.
 -   https://use.fontawesome.com/releases/v5.6.3/css/all.css: FontAwesome styles.
 
 ### Libraries
@@ -119,25 +124,15 @@ The code loads three CSS files:
 
 #### Data APIs:
 
--   Allocations data: https://cbpfapi.unocha.org/vo2/odata/AllocationTypes?PoolfundCodeAbbrv=&$format=csv
-
--   Sector and people data: https://cbpfapi.unocha.org/vo2/odata/PoolFundBeneficiarySummary?$format=csv&ShowAllPooledFunds=1
+-   HRP data: https://cbpfapi.unocha.org/vo2/odata/HRPCBPFFundingSummary?PoolfundCodeAbbrv=&$format=csv
 
 #### Master Tables:
 
-No master table used.
-
-### Miscellaneous
-
-#### Data filters
-
-When loaded at the [production](https://cbpf.data.unocha.org/) or [staging](https://cbpfgms.github.io/cbpf-bi-stag/) sites, the code for this data visualization doesn't fetch the data from the APIs described above directly. Instead, on those sites, a different script fetches the data, checks for the types in the objects and then passes the data to the code. This filtering script is [documented here](../../Utils/CBPF-BI-filters.md).
-
-_Note_: any error in the data types will be logged **only on the staging site** (check the browser's console). On the production site no error will be logged. On both sites, the object with the error is simply ignored.
+-   Regional funds: https://cbpfgms.github.io/pfbi-data/mst/MstRhpf.json
 
 ## Notes
 
 This dataviz can be embedded in any page, the code automatically fetches all data, master tables, libraries and style sheets needed.
 Just copy/paste the following snippet:
 
-`<div id="d3chartcontainerpbiobe" data-title="Cluster Overview" data-cbpf="all" data-year="2025" data-modality="total" data-beneficiaries="targeted" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbiobe/src/d3chartpbiobe.js"></script>`
+`<div id="d3chartcontainerpbihrp" data-title="CBPF Target vs HRP" data-year="2025" data-sortby="CBPF Funding" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbihrp/src/d3chartpbihrp.js"></script>`

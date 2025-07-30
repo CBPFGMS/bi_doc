@@ -142,6 +142,14 @@ The code loads three CSS files:
 -   Partners: https://cbpfapi.unocha.org/vo2/odata/MstOrgType?$format=csv
 -   Sub-implementing partners: https://cbpfapi.unocha.org/vo2/odata/SubIPType?$format=csv
 
+### Miscellaneous
+
+#### Data filters
+
+When loaded at the [production](https://cbpf.data.unocha.org/) or [staging](https://cbpfgms.github.io/cbpf-bi-stag/) sites, the code for this data visualization doesn't fetch the data from the APIs described above directly. Instead, on those sites, a different script fetches the data, checks for the types in the objects and then passes the data to the code. This filtering script is [documented here](../../Utils/CBPF-BI-filters.md).
+
+_Note_: any error in the data types will be logged **only on the staging site** (check the browser's console). On the production site no error will be logged. On both sites, the object with the error is simply ignored.
+
 ## Notes
 
 This dataviz can be embedded in any page, the code automatically fetches all data, master tables, libraries and style sheets needed.

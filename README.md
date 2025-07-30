@@ -17,15 +17,15 @@ This repository contains the documentation for all data visualisations, as well 
 -   [Allocations](./Dataviz/CBPF-Data-Hub/Allocations.md)
 -   [Allocations timeline](./Dataviz/CBPF-Data-Hub/Allocations-timeline.md)
 -   [Contributions](./Dataviz/CBPF-Data-Hub/Contributions.md)
--   [Contribution trends](./Dataviz/CBPF-Data-Hub/.md)
--   [Funding overview](./Dataviz/CBPF-Data-Hub/.md)
--   [Sectors](./Dataviz/CBPF-Data-Hub/.md)
--   [Targeted and reached people](./Dataviz/CBPF-Data-Hub/.md)
--   [Gender with age marker](./Dataviz/CBPF-Data-Hub/.md)
--   [Allocations overview](./Dataviz/CBPF-Data-Hub/.md)
+-   [Contribution trends](./Dataviz/CBPF-Data-Hub/Contributions-trend.md)
+-   [Funding overview](./Dataviz/CBPF-Data-Hub/Funding-overview.md)
+-   [Sectors](./Dataviz/CBPF-Data-Hub/Sectors.md)
+-   [Targeted and reached people](./Dataviz/CBPF-Data-Hub/Targeted-and-reached-people.md)
+-   [Gender with age marker](./Dataviz/CBPF-Data-Hub/Gam.md)
+-   [Allocations overview](./Dataviz/CBPF-Data-Hub/Allocations-overview.md)
 -   [Results dashboard](./Dataviz/CBPF-Data-Hub/.md)
 -   [Progress dashboard](./Dataviz/CBPF-Data-Hub/.md)
--   [CBPF vs HRP](./Dataviz/CBPF-Data-Hub/.md)
+-   [CBPF vs HRP](./Dataviz/CBPF-Data-Hub/Hrp.md)
 
 ### CERF Data Hub
 
@@ -38,6 +38,10 @@ This repository contains the documentation for all data visualisations, as well 
 -   Allocations:
 -   Contributions:
 -   Country Profile:
+
+## Utils
+
+- CBPF BI filters
 
 ## APIs
 
