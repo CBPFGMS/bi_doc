@@ -21,7 +21,7 @@ When selecting a report year, as well as the other filters (fund, allocation sou
 
 ### Data encoding
 
-This uses grouped pictograms and grouped bar charts, where in each group one bar (or pictogram) represents targeted people and another bar (or pictogram) represents reached people.
+This dashboard uses grouped pictograms and grouped bar charts, where in each group one bar (or pictogram) represents targeted people and another bar (or pictogram) represents reached people.
 
 The world map shows allocations by geographic position, where the size of the circle (not its radius) encodes the number of targeted people. A color gradient for the circles encodes the percentage of reached people (note: that percentage can be greater than 100%, that is, it's possible that the number of reached people is bigger than the original number of targeted people).
 

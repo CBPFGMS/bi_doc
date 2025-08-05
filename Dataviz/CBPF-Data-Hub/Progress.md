@@ -8,59 +8,81 @@ Data visualization in the staging site: https://cbpfgms.github.io/cbpf-bi-stag/r
 
 ### Purpose
 
-**Progress dashboard** is a collection of data visualizations that shows the allocations corresponding to a given _report year_. This is not the same of allocation year: a given report year may contain data for allocations in several different years. For instance, the report year 2025 contains data for 2024, 2023 etc, up to 2018.
+**Progress dashboard** is a collection of data visualizations that shows the allocations corresponding to a given year, with focus on _under implementation_ and _programmatically closed_ allocations.
 
-When selecting a report year, as well as the other filters (fund, allocation source, allocation type), the dashboard shows a series of small tables and data visualizations:
+When selecting a year, as well as the other filters (fund, allocation source, allocation type and allocation status), the dashboard shows a series of small tables and data visualizations:
 
--   Top figures with total allocations, number of partners and number of projects, for each allocation year contained in that report year.
+-   Top figures with total allocations, allocations under implementation, number of partners and number of projects, for each allocation year.
 -   A grouped pictogram chart showing targeted and reached people with breakdown by beneficiary gender and age (women, girls, men and boys).
 -   A grouped bar chart showing targeted and reached people for each beneficiary type (Internally Displaced People,Host Communities,Other, Returnees,Refugees).
 -   A grouped bar chart showing targeted and reached people for each organization type.
 -   A grouped bar chart showing targeted and reached people for each sector.
--   A world map showing targeted and reach people for each allocation location.
+-   A grouped bar chart showing targeted and reached people with disabilities, with breakdown by beneficiary gender and age (women, girls, men and boys).
+-   A donut chart indicating the percentage of GBV (_Gender-Based Violence_) budget for targeted and reached people.
+-   A series of area charts showing allocations by emergency groups.
+-   A mix of grouped bar chart and donut chart showing CVA (_Cash and Voucher Assistance_) allocations, with breakdown by CVA type and sector.
+-   An option for generating a table with the global indicators for all allocations under the current filter.
 
 ### Data encoding
 
-This uses grouped pictograms and grouped bar charts, where in each group one bar (or pictogram) represents targeted people and another bar (or pictogram) represents reached people.
+This dashboard uses grouped pictograms and grouped bar charts, where in each group one bar (or pictogram) represents targeted people and another bar (or pictogram) represents reached people.
 
-The world map shows allocations by geographic position, where the size of the circle (not its radius) encodes the number of targeted people. A color gradient for the circles encodes the percentage of reached people (note: that percentage can be greater than 100%, that is, it's possible that the number of reached people is bigger than the original number of targeted people).
+The donut charts indicate amount or percentage relative to a full circle (360°).
+
+The area chart uses time for the x axis and allocated amounts for the y axis.
 
 ### Interactivity
 
-1. At the top of the dashboard the user can select the report year, either via dropdown or clicking the arrows. Only one report year can be selected.
+1. At the top of the dashboard a scroolspy indicates the visible charts in the dashboard, and when clicked the page jumps to that chart.
 
-2. Below the year selection dropdown a scroolspy indicates the visible charts in the dashboard, and when clicked the page jumps to that chart.
+2. Below the scrollspy, four dropdowns allow filtering by:
 
-3. Three dropdowns allow filtering by:
-
+    - Year
     - Fund
     - Allocation type
     - Allocation source
 
-4. The button _Click for expanding the overview section_ shows a mini bar chart with the breakdown of allocation years for the selected report year. The bar chart can show:
+3. The status area breaks down all allocations in the selection in _under implementation_ and _programmatically closed_, and allows filtering as well.
 
-    - Allocations
-    - Number of partners
-    - Number of projects
-
-5. For each chart, two icons on the top right corner allow:
+4. For each chart, two icons on the top right corner allow:
 
     - Downloading the data as CSV
     - Downloading or copying to the clipboard a screenshot of the chart
 
-6. All charts, including the world map, show detailed figures when hovered over.
+5. For the _Beneficiary type_, _Organization_ and _Sector_ charts checkboxes allow the filtering by gender and age (women, girls, men and boys).
+
+6. In the _Emergency groups_ chart the user can select two data encodings:
+
+    - Overview: a simple bar chart, aggregating all values in the year selection.
+    - Time series: an area chart depicting time on the x axis
+
+    Also, the user can aggregate all emergency types or can separate them by emergency group.
+
+7. In the _CVA_ chart a switch allows the user to choose between dollar values or number of people, both for targeted and reached numbers. For each CVA type, when hovered over, a tooltip with a breakdown by sector is displayed.
+
+8. All charts show detailed figures when hovered over.
 
 ## Technical aspects
 
 ### Source code
 
-This is the source code for the project: https://github.com/CBPFGMS/cbpfgms.github.io/tree/master/resultsdash/src/
+This is the source code for the project: https://github.com/CBPFGMS/cbpfgms.github.io/tree/master/progress/src/
 
 There is no production and staging source codes. The build is hosted in the staging site for development purposes.
 
 ### Data attributes
 
-There is no data attribute required by the code.
+The code looks for the following data attributes in a `div` with `id="progressroot"`:
+
+-   **`data-year`**: defines the year depicted by the data visualisation when the page loads. Only one year is allowed. If no value is provided, the current year is used.
+
+-   **`data-fundtype`**: defines the fund used by the code. The values are:
+
+    -   `1`: CBPF
+    -   `2`: CERF
+        If no value is provided, both CERF and CBPF data will be fetched.
+
+-   **`data-startyear`**: defines the first year fetched in the data, the last year being the current year. If no value is provided all data will be fetched.
 
 ### Language
 
@@ -68,18 +90,17 @@ Typescript, with React components in `.tsx` files.
 
 ### HTML
 
-The build requires a div with `id="resultsroot"` for rendering the React components.
+The build requires a div with `id="progressroot"` for rendering the React components.
 
 ### CSS
 
-For correct displaying the world map, the Leaflet CSS link should be added to the page:
+For better readability, this dashboard uses Montserrat:
 
 ```
 <link
 	rel="stylesheet"
-	href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-	integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-	crossorigin=""
+	crossorigin="anonymous"
+	href="https://fonts.googleapis.com/css?family=Montserrat:400,400i,700,700i,600,600i"
 />
 ```
 
@@ -89,7 +110,7 @@ This is a React project built with Vite. The `package.json` describes the requir
 
 ```
 {
-	"name": "resultsdash",
+	"name": "progress",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
@@ -100,38 +121,35 @@ This is a React project built with Vite. The `package.json` describes the requir
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@emotion/react": "^11.11.1",
-		"@emotion/styled": "^11.11.0",
-		"@mui/icons-material": "^5.14.3",
-		"@mui/material": "^5.14.5",
+		"@emotion/react": "^11.11.4",
+		"@emotion/styled": "^11.11.5",
+		"@gromy/react-swipeable-views": "^0.15.1",
+		"@mui/icons-material": "^5.15.16",
+		"@mui/material": "^6.1.0",
 		"@react-spring/web": "^9.7.3",
-		"@types/d3": "^7.4.0",
-		"@types/parse-json": "^4.0.0",
-		"d3": "^7.8.5",
-		"leaflet": "^1.9.4",
+		"d3": "^7.9.0",
+		"html-to-image": "^1.11.11",
+		"idb": "^8.0.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"react-intersection-observer": "^9.5.2",
-		"react-leaflet": "^4.2.1",
-		"react-tooltip": "^5.21.1",
-		"vite-plugin-svgr": "^3.2.0",
-		"zod": "^3.22.4",
-		"html-to-image": "^1.11.11"
+		"react-intersection-observer": "^9.10.2",
+		"react-tooltip": "^5.26.4",
+		"zod": "^3.22.4"
 	},
 	"devDependencies": {
-		"@types/leaflet": "^1.9.4",
-		"@types/react": "^18.2.15",
-		"@types/react-dom": "^18.2.7",
-		"@typescript-eslint/eslint-plugin": "^6.0.0",
-		"@typescript-eslint/parser": "^6.0.0",
-		"@vitejs/plugin-react-swc": "^3.3.2",
-		"eslint": "^8.45.0",
+		"@types/d3": "^7",
+		"@types/react": "^18.2.66",
+		"@types/react-dom": "^18.2.22",
+		"@types/react-swipeable-views": "^0",
+		"@typescript-eslint/eslint-plugin": "^7.2.0",
+		"@typescript-eslint/parser": "^7.2.0",
+		"@vitejs/plugin-react-swc": "^3.5.0",
+		"eslint": "^8.57.0",
 		"eslint-plugin-react-hooks": "^4.6.0",
-		"eslint-plugin-react-refresh": "^0.4.3",
-		"typescript": "^5.6.2",
-		"vite": "^4.4.5"
-	},
-	"packageManager": "yarn@4.2.1"
+		"eslint-plugin-react-refresh": "^0.4.6",
+		"typescript": "^5.2.2",
+		"vite": "^5.2.0"
+	}
 }
 ```
 
@@ -141,190 +159,233 @@ All the API calls, be it data or master tables, are validated using Zod schemas.
 
 The staging site logs any invalid object as a warning (but not the production site).
 
-For all Zod schemas, these constants are used:
+Some strings are validated using regex:
 
 ```
-const numberOfFunds = 252,
-	numberOfAllocationSources = 4,
-	numberOfOrganizationTypes = 4,
-	numberOfBeneficiaryTypes = 23,
-	numberOfSectors = 17;
-
-const beneficiariesSchema = z.number().nullable();
+const splitRegex = /^(\d*\|\d*\|\d*\|\d*\|\d*)$/,
+	dateRegex =
+		/\b([1-9]|0[1-9]|1[012])\/([1-9]|0[1-9]|1[0-9]|2[0-9]|3[01])\/20\d\d\b/;
 ```
 
 #### Data APIs:
 
--   Sectors data: https://cbpfgms.github.io/pfbi-data/cbpf/results/ByCluster.csv
+-   Projects summary: https://cbpfapi.unocha.org/vo3/odata/GlobalGenericDataExtract?SPCode=PF_PROJ_SUMMARY
 
-    Zod schema for the sectors data:
-
-    ```
-    z.object({
-    	PooledFundId: z.number().min(1).max(numberOfFunds),
-    	AllocationYear: z.number(),
-    	ReportApprovedDate: z.date(),
-    	AllocationtypeId: z.number(),
-    	AllocationSourceId: z.number().min(1).max(numberOfAllocationSources),
-    	ClusterId: z.number().min(1).max(numberOfSectors),
-    	ClusterBudget: z.number().min(0),
-    	TargetedMen: z.number().nullable(),
-    	TargetedWomen: z.number().nullable(),
-    	TargetedBoys: z.number().nullable(),
-    	TargetedGirls: z.number().nullable(),
-    	ReachedMen: z.number().nullable(),
-    	ReachedWomen: z.number().nullable(),
-    	ReachedBoys: z.number().nullable(),
-    	ReachedGirls: z.number().nullable(),
-    });
-    ```
-
--   Disability data: https://cbpfgms.github.io/pfbi-data/cbpf/results/ByGender_Disability.csv
-
-    Zod schema for disability data:
+    Zod schema for the projects summary data:
 
     ```
     z.object({
-    	PooledFundId: z.number().min(1).max(numberOfFunds),
-    	AllocationYear: z.number(),
-    	ReportApprovedDate: z.date(),
-    	AllocationtypeId: z.number(),
-    	AllocationSourceId: z.number().min(1).max(numberOfAllocationSources),
-    	NumbofProjects: z.number(),
-    	TotalNumbPartners: z.number(),
-    	Budget: z.number().min(0),
-    	TargetedMen: z.number().nullable(),
-    	TargetedWomen: z.number().nullable(),
-    	TargetedBoys: z.number().nullable(),
-    	TargetedGirls: z.number().nullable(),
-    	ReachedMen: z.number().nullable(),
-    	ReachedWomen: z.number().nullable(),
-    	ReachedBoys: z.number().nullable(),
-    	ReachedGirls: z.number().nullable(),
-    	DisabledMen: z.number().nullable(),
-    	DisabledWomen: z.number().nullable(),
-    	DisabledBoys: z.number().nullable(),
-    	DisabledGirls: z.number().nullable(),
-    	ReachedDisabledMen: z.number().nullable(),
-    	ReachedDisabledWomen: z.number().nullable(),
-    	ReachedDisabledBoys: z.number().nullable(),
-    	ReachedDisabledGirls: z.number().nullable(),
-    });
+    	FundType: z.union([z.literal(1), z.literal(2)]),
+    	PooledFundId: z.number().int().nonnegative(),
+    	AllocationtypeId: z.number().int().nonnegative(),
+    	ChfId: z.number().int().nonnegative(),
+    	ChfProjectCode: z.string(),
+    	OrgId: z.number().int().nonnegative(),
+    	PrjDuration: z.string(),
+    	EndDate: z.string().regex(dateRegex, "Invalid date format"),
+    	Budget: z.number().nonnegative(),
+    	BenM: z.number().int().nonnegative(),
+    	BenW: z.number().int().nonnegative(),
+    	BenB: z.number().int().nonnegative(),
+    	BenG: z.number().int().nonnegative(),
+    	GMId: z.union([z.number(), z.string()]).nullable(),
+    	GAMId: z.number().nullable(),
+    	GlbPrjStatusId: z.number().int().nonnegative(),
+    	GlobalUniqueOrgId: z.number().int().nonnegative(),
+    	DisabilityMarkerId: z.number().int().nonnegative().nullable(),
+    	GenderEqualityMarkerId: z.number().int().nonnegative().nullable(),
+    	GBVMarkerId: z.number().int().nonnegative().nullable(),
+    	GAMRefNumber: z.string().nullable(),
+    	PartnerProjectRisk: z.string().nullable(),
+    	PartnerRisk: z.string().nullable(),
+    	DisabledM: z.number().int().nonnegative().nullable(),
+    	DisabledW: z.number().int().nonnegative().nullable(),
+    	DisabledB: z.number().int().nonnegative().nullable(),
+    	DisabledG: z.number().int().nonnegative().nullable(),
+    	AchM: z.number().int().nonnegative().nullable(),
+    	AchW: z.number().int().nonnegative().nullable(),
+    	AchB: z.number().int().nonnegative().nullable(),
+    	AchG: z.number().int().nonnegative().nullable(),
+    	BenMSplit: z
+    		.string()
+    		.regex(splitRegex, "Invalid split string format")
+    		.nullable(),
+    	BenWSplit: z
+    		.string()
+    		.regex(splitRegex, "Invalid split string format")
+    		.nullable(),
+    	BenBSplit: z
+    		.string()
+    		.regex(splitRegex, "Invalid split string format")
+    		.nullable(),
+    	BenGSplit: z
+    		.string()
+    		.regex(splitRegex, "Invalid split string format")
+    		.nullable(),
+    	BenTotSplit: z
+    		.string()
+    		.regex(splitRegex, "Invalid split string format")
+    		.nullable(),
+    	AchMSplit: z
+    		.string()
+    		.regex(splitRegex, "Invalid split string format")
+    		.nullable(),
+    	AchWSplit: z
+    		.string()
+    		.regex(splitRegex, "Invalid split string format")
+    		.nullable(),
+    	AchBSplit: z
+    		.string()
+    		.regex(splitRegex, "Invalid split string format")
+    		.nullable(),
+    	AchGSplit: z
+    		.string()
+    		.regex(splitRegex, "Invalid split string format")
+    		.nullable(),
+    	AchTotSplit: z
+    		.string()
+    		.regex(splitRegex, "Invalid split string format")
+    		.nullable(),
+    	AchDisabledM: z.number().int().nonnegative().nullable(),
+    	AchDisabledW: z.number().int().nonnegative().nullable(),
+    	AchDisabledB: z.number().int().nonnegative().nullable(),
+    	AchDisabledG: z.number().int().nonnegative().nullable(),
+    	GBVBudget: z.number().nonnegative().nullable(),
+    	AchGBVBudget: z.number().nonnegative().nullable(),
+    	GBVPeopleTgt: z.number().int().nonnegative().nullable(),
+    	AchGBVPeople: z.number().int().nonnegative().nullable(),
+    	GendEqBudget: z.number().nonnegative().nullable(),
+    	AchGendEqBudget: z.number().nonnegative().nullable(),
+    	GendEqPeopleTgt: z.number().int().nonnegative().nullable(),
+    	AchGendEqPeople: z.number().int().nonnegative().nullable(),
+    	ProtBudget: z.number().nonnegative().nullable(),
+    	AchProtBudget: z.number().nonnegative().nullable(),
+    	ProtPeopleTgt: z.number().int().nonnegative().nullable(),
+    	AchProtPeople: z.number().int().nonnegative().nullable(),
+    	RptCode: z.union([z.literal(1), z.literal(2)]).nullable(),
+    	StartDate: z.string().regex(dateRegex, "Invalid date format"),
+    	PrjApprDate: z.string().regex(dateRegex, "Invalid date format"),
+    	CVATotPeople: z.number().int().nonnegative().nullable(),
+    	AchCVATotPeople: z.number().int().nonnegative().nullable(),
+    })
     ```
 
--   Location data: https://cbpfgms.github.io/pfbi-data/cbpf/results/ByGender_Disability.csv
+-   Sectors data: https://cbpfapi.unocha.org/vo3/odata/GlobalGenericDataExtract?SPCode=PF_RPT_CLST_BENEF
 
-    Zod schema for location data:
-
-    ```
-    z.object({
-    	PooledFundId: z.number().min(1).max(numberOfFunds),
-    	AllocationYear: z.number(),
-    	ApprovedDate: z.date(),
-    	LocationID: z.number(),
-    	AllocationtypeId: z.number(),
-    	AllocationSourceId: z.number().min(1).max(numberOfAllocationSources),
-    	TargetMen: z.number().nullable(),
-    	TargetWomen: z.number().nullable(),
-    	TargetBoys: z.number().nullable(),
-    	TargetGirls: z.number().nullable(),
-    	ReachedMen: z.number().nullable(),
-    	ReachedWomen: z.number().nullable(),
-    	ReachedBoys: z.number().nullable(),
-    	ReachedGirls: z.number().nullable(),
-    });
-    ```
-
--   Allocation type data: https://cbpfgms.github.io/pfbi-data/cbpf/results/ByType.csv
-
-    Zod schema for allocation type data:
-
-    ```
-    z.object({
-    	PooledFundId: z.number().min(1).max(numberOfFunds),
-    	AllocationYear: z.number(),
-    	ReportApprovedDate: z.date(),
-    	BeneficiaryTypeId: z.number().min(1).max(numberOfBeneficiaryTypes),
-    	AllocationtypeId: z.number(),
-    	AllocationSourceId: z.number().min(1).max(numberOfAllocationSources),
-    	TargetMen: z.number().nullable(),
-    	TargetWomen: z.number().nullable(),
-    	TargetBoys: z.number().nullable(),
-    	TargetGirls: z.number().nullable(),
-    	ReachedMen: z.number().nullable(),
-    	ReachedWomen: z.number().nullable(),
-    	ReachedBoys: z.number().nullable(),
-    	ReachedGirls: z.number().nullable(),
-    });
-    ```
-
--   Organization data: https://cbpfgms.github.io/pfbi-data/cbpf/results/ByGender_Disability.csv
-
-    Zod schema for organization data:
-
-    ```
-    z.object({
-    	PooledFundId: z.number().min(1).max(numberOfFunds),
-    	AllocationYear: z.number(),
-    	ReportApprovedDate: z.date(),
-    	AllocationtypeId: z.number(),
-    	AllocationSourceId: z.number().min(1).max(numberOfAllocationSources),
-    	OrganizationType: z.number().min(1).max(numberOfOrganizationTypes),
-    	NumbofProjects: z.number(),
-    	TotalNumbPartners: z.number(),
-    	Budget: z.number().min(0),
-    	TargetedMen: z.number().nullable(),
-    	TargetedWomen: z.number().nullable(),
-    	TargetedBoys: z.number().nullable(),
-    	TargetedGirls: z.number().nullable(),
-    	ReachedMen: z.number().nullable(),
-    	ReachedWomen: z.number().nullable(),
-    	ReachedBoys: z.number().nullable(),
-    	ReachedGirls: z.number().nullable(),
-    });
-    ```
-
--   Approved allocations data: https://cbpfgms.github.io/pfbi-data/cbpf/results/ByGender_Disability.csv
-
-    Zod schema for approved allocations data:
+    Zod schema for sectors data:
 
     ```
     z.object({
-    	AllocationYear: z.number(),
-    	ApprovedBudget: z.number().min(0),
-    	ApprovedReserveBudget: z.number().min(0),
-    	ApprovedReserveBudgetPercentage: z.number().min(0).max(100),
-    	ApprovedStandardBudget: z.number().min(0),
-    	ApprovedStandardBudgetPercentage: z.number().min(0).max(100),
-    	FundingType: z.number(),
-    	OrganizationType: z.string(),
-    	PipelineBudget: z.number().min(0),
-    	PipelineReserveBudget: z.number().min(0),
-    	PipelineReserveBudgetPercentage: z.number().min(0).max(100),
-    	PipelineStandardBudget: z.number().min(0),
-    	PipelineStandardBudgetPercentage: z.number().min(0).max(100),
     	PooledFundName: z.string(),
-    	PooledFundId: z.number().min(1).max(numberOfFunds).optional(),
+    	PooledFundId: z.number().int().nonnegative(),
+    	AllocationTypeId: z.number().int().nonnegative(),
+    	ChfId: z.number().int().nonnegative(),
+    	ChfProjectCode: z.string(),
+    	CountryClusterId: z.number().int().nonnegative(),
+    	GlobalClusterId: z.number().int().nonnegative(),
+    	Percentage: z.number().nonnegative(),
+    	CALCBudgetByCluster: z.number().nonnegative(),
+    	TargetMen: z.number().int().nonnegative().nullable(),
+    	TargetWomen: z.number().int().nonnegative().nullable(),
+    	TargetBoys: z.number().int().nonnegative().nullable(),
+    	TargetGirls: z.number().int().nonnegative().nullable(),
+    	ActualMen: z.number().int().nonnegative().nullable(),
+    	ActualWomen: z.number().int().nonnegative().nullable(),
+    	ActualBoys: z.number().int().nonnegative().nullable(),
+    	ActualGirls: z.number().int().nonnegative().nullable(),
+    	GlobalInstanceStatusId: z.number().int().nonnegative().nullable(),
+    	SubmissionDate: z
+    		.string()
+    		.regex(dateRegex, "Invalid date format")
+    		.nullable(),
+    });
+    ```
+
+-   Global indicators data: https://cbpfgms.github.io/pfbi-data/cbpf/results/ByGender_Disability.csv
+
+    Zod schema for global indicators data:
+
+    ```
+    z.object({
+    	FundTypeId: z.union([z.literal(1), z.literal(2)]),
+    	PooledFundId: z.number().int().nonnegative(),
+    	CHFId: z.number().int().nonnegative(),
+    	CHFProjectCode: z.string(),
+    	ClstrId: z.number().int().nonnegative().nullable(),
+    	GlbClstrId: z.number().int().nonnegative(),
+    	GlbIndicId: z.number().int().nonnegative(),
+    	CommClstrId: z.number().int().nonnegative().nullable(),
+    	GlbIndicType: z.union([z.literal(1), z.literal(2)]).nullable(),
+    	TgtM: z.number().nonnegative().nullable(),
+    	TgtW: z.number().nonnegative().nullable(),
+    	TgtB: z.number().nonnegative().nullable(),
+    	TgtG: z.number().nonnegative().nullable(),
+    	TgtTotal: z.number().nonnegative(),
+    	AchM: z.number().nonnegative().nullable(),
+    	AchW: z.number().nonnegative().nullable(),
+    	AchB: z.number().nonnegative().nullable(),
+    	AchG: z.number().nonnegative().nullable(),
+    	AchTotal: z.number().nonnegative().nullable(),
+    });
+    ```
+
+-   Emergencies data: https://cbpfgms.github.io/pfbi-data/cbpf/results/ByType.csv
+
+    Zod schema for emergencies data:
+
+    ```
+    z.object({
+    	CHFId: z.number().int().nonnegative(),
+    	EmergencyTypeId: z.number().int().nonnegative(),
+    	EmergencyPercent: z.number().min(0).max(100),
+    	PooledFundId: z.number().int().nonnegative(),
+    	PooledFundName: z.string(),
+    	CHFProjectCode: z.string(),
+    	OrganizationName: z.string().nullable(),
+    	OrganizationAcronym: z.string().nullable(),
+    	OrganizationType: z.string().nullable(),
+    	AllocationTypeName: z.string().nullable(),
+    	AllocationYear: z.number().int().nonnegative(),
+    	ProjectStatus: z.string().nullable(),
+    	ProjectBudget: z.number().nonnegative(),
+    	EmergencyTypeName: z.string().nullable(),
+    });
+    ```
+
+-   CVA data: https://cbpfgms.github.io/pfbi-data/cbpf/results/ByGender_Disability.csv
+
+    Zod schema for CVA data:
+
+    ```
+    z.object({
+    	PooledFundId: z.number().int().nonnegative(),
+    	CHFId: z.number().int().nonnegative(),
+    	ChfProjectCode: z.string(),
+    	OrganizationTypeId: z.number().int().nonnegative(),
+    	AllocationYear: z.number().int().nonnegative(),
+    	CVATypeId: z.number().int().nonnegative(),
+    	ClusterId: z.number().int().nonnegative(),
+    	TransferAmount: z.number().nonnegative().nullable(),
+    	TotalAmtTransferred: z.number().nonnegative().nullable(),
+    	PeopleTargeted: z.number().int().nonnegative().nullable(),
+    	PeopleReached: z.number().int().nonnegative().nullable(),
+    	GlobalClusterId: z.number().int().nonnegative(),
     });
     ```
 
 #### Master Tables:
 
--   Location master: https://cbpfgms.github.io/pfbi-data/cbpf/results/locationMst.csv
-
--   Beneficiaries master: https://cbpfgms.github.io/pfbi-data/cbpf/results/MstBeneficiaryType.csv
-
--   Allocation types master: https://cbpfgms.github.io/pfbi-data/cbpf/results/MstAllocationType.csv
-
--   Funds master: https://cbpfgms.github.io/pfbi-data/mst/MstCountry.json
-
--   Allocation sources master: https://cbpfgms.github.io/pfbi-data/mst/MstAllocation.json
-
--   Organization types master: https://cbpfgms.github.io/pfbi-data/mst/MstOrganization.json
-
--   Sectors master: https://cbpfgms.github.io/pfbi-data/mst/MstCluster.json
-
-## Notes
+-   Allocation types master: https://cbpfapi.unocha.org/vo2/odata/AllocationTypes
+-   Organizations master: https://cbpfapi.unocha.org/vo3/odata/GlobalGenericDataExtract?SPCode=PF_ORG_SUMMARY
+-   Project status master: https://cbpfapi.unocha.org/vo3/odata/GlobalGenericDataExtract?SPCode=PF_GLB_STATUS
+-   Beneficiary types master: "https://cbpfgms.github.io/pfbi-data/cbpf/results/MstBeneficiaryType.csv"
+-   Funds master: "https://cbpfapi.unocha.org/vo2/odata/MstPooledFund?$format=csv"
+-   Allocation sources master: "https://cbpfapi.unocha.org/vo2/odata/MstAllocationSource?$format=csv"
+-   Organization types master: "https://cbpfapi.unocha.org/vo2/odata/MstOrgType?$format=csv"
+-   Sectors master: "https://cbpfapi.unocha.org/vo2/odata/MstClusters?$format=csv"
+-   Global indicators master: "https://cbpfapi.unocha.org/vo3/odata/GlobalGenericDataExtract?SPCode=GLB_INDIC_MST&GlobalIndicatorType=&$format=csv"
+-   Emergencies master: "https://cbpfapi.unocha.org/vo3/odata/GlobalGenericDataExtract?SPCode=EMERG_TYPE_MST&$format=csv"
+-   CVA master: **currently hardcoded**
 
 For developing this project locally, copy the project folder and do:
 

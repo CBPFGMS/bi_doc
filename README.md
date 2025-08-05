@@ -23,8 +23,8 @@ This repository contains the documentation for all data visualisations, as well 
 -   [Targeted and reached people](./Dataviz/CBPF-Data-Hub/Targeted-and-reached-people.md)
 -   [Gender with age marker](./Dataviz/CBPF-Data-Hub/Gam.md)
 -   [Allocations overview](./Dataviz/CBPF-Data-Hub/Allocations-overview.md)
--   [Results dashboard](./Dataviz/CBPF-Data-Hub/.md)
--   [Progress dashboard](./Dataviz/CBPF-Data-Hub/.md)
+-   [Results dashboard](./Dataviz/CBPF-Data-Hub/Results.md)
+-   [Progress dashboard](./Dataviz/CBPF-Data-Hub/Progress.md)
 -   [CBPF vs HRP](./Dataviz/CBPF-Data-Hub/Hrp.md)
 
 ### CERF Data Hub
