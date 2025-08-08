@@ -1,52 +1,53 @@
-# Allocation flow
+# Allocations
 
-Data visualization hosted at: https://cbpf.data.unocha.org/#netfunding_heading
+Data visualization hosted at: https://cerf.data.unocha.org/#Allocations
 
-Data visualization in the staging site: https://cbpfgms.github.io/cbpf-bi-stag/#netfunding_heading
+Data visualization in the staging site: https://cbpfgms.github.io/cerf-bi-stag/#Allocations
 
 ## Introduction
 
 ### Purpose
 
-**Allocation flow** is a data visualization that shows the flow of allocated values from the funds to the implementing partners, or direct partners, which are the direct recipients from the funds, and to sub-implementing partners, which receive funds from direct partners.
-
-The implementing partners, or direct partners, may or may not transfer part of their funds to sub-implementing partners, or indirect partners. These sub-implementing partners can be the same or a different partner type (National NGO, International NGO, UN Agency, Red Cross/Red Crescent Society).
+**Allocations** is a mixed of a choropleth map and a stacked bar chart. The choropleth map allow the user to see geographic trends and patterns in the allocations around the world, for the selected period and window, while the stacked bar chart allows ranking and comparison of the allocations by UN agency, also for the selected period and window.
 
 ### Data encoding
 
-This charts uses a sankey diagram for depicting both the flow from funds to the implementing partners, that sit in the middle of the chart, and from these implementing partners to the sub-implementing partners (if any), that sit on the right hand side of the chart. The width of each ribbon encodes the total donated/allocated.
+The choropleth map encodes the amount allocation by using a color variation: different shades of blue or yellow (depending on the selected window) indicate the amount allocated.
 
-As the funds may not be transferred to sub-implementing partners, for easiest comparison, the amount kept by the implementing partners is repeated on the right hand side of the sankey diagram. On that area, a color encoding is used: gray for direct partners, red for sub-implementing partners.
+The stached bar chart is just like a regular bar chart, but when both windows (_Underfunded Emergencies_ and _Rapid Response_) are selected, those windows are stacked one on top of the other, as a single bar.
 
 ### Interactivity
 
-1. At the top right corner of the dataviz there are five buttons:
+1. At the top right corner of the dataviz there are four buttons:
 
     - **Share**: copies a link with all the current selections to the clipboard. Use that link to go to the Bookmark page;
     - **Play**: Changes the year at a regular interval, allowing the user to visualise changes along time.
     - **Image**: downloads a snapshot of the chart, as a .png file or as a .pdf file. You can also right-click anywhere in the chart to download a snapshot containing the tooltip;
     - **Csv**: downloads the data as a .csv file;
-    - **Help**: shows an annotated layer with tips about how to use and how to understand the chart.
 
-2. The _Select CBPF_ checkboxes allow filtering by fund.
+2. The year buttons select the year depicted in the dataviz. Multiple years can be selected by double-clicking or pressing ALT while clicking.
 
-3. The year buttons select the year depicted in the dataviz. Multiple years can be selected by double-clicking or pressing ALT while clicking.
+3. Next to the year buttons, three buttons allow the user to filter the data by window:
 
-4. The user can aggregate the values on the right hand side of the sankey diagram by partner level, meaning that direct and indirect partners will sit in their respective groups, or by partner type, meaning that each partner type (National NGO, International NGO, UN Agency, Red Cross/Red Crescent Society) will show a breakdown by implementing/sub-implementing partner.
+    - Total (Underfunded Emergencies plus Rapid Response)
+    - Underfunded Emergencies
+    - Rapid Response
+
+4. Hovering over any country on the map brings a tooltip that displays detailed values, and a breakdown by sector. Hovering over any bar brings a tooltip that displays detailed values, and a breakdown by window.
 
 ## Technical aspects
 
 ### Source code
 
--   Production: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbinad/src/d3chartpbinad.js
+-   Production: https://github.com/UN-OCHA/cerfdata-unocha-org/blob/master/charts/allocationsoverview.js
 
--   Staging: https://github.com/CBPFGMS/cbpfgms.github.io/blob/master/pbinad/src/d3chartpbinad-stg.js
+-   Staging: https://github.com/CBPFGMS/cerf-bi-stag/blob/main/charts/allocationsoverview.js
 
 ### Data attributes
 
-The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbinad"`. These data attributes are:
+The code retrieves data attributes in a `<div>` with `id="d3chartcontainerallocover"`. These data attributes are:
 
--   **`data-title`**: sets the title of the chart. If left empty the chart title defaults to _Allocation flow (net funding)_.
+-   **`data-title`**: sets the title of the chart. If left empty the chart title defaults to _Allocations_.
 
 -   **`data-year`**: defines the year depicted by the data visualization when the page loads. The value has to be a string containing the year with century as a decimal number, such as:
 
@@ -60,26 +61,20 @@ The code retrieves data attributes in a `<div>` with `id="d3chartcontainerpbinad
 
     This value defines only the selected year when the page loads: the user can easily change the selected year by clicking the corresponding buttons. Also, the user can select more than one year.
 
--   **`data-cbpf`**: defines the selected fund when the page loads. For not selecting any country set the value to `"none"`, or just leave it empty:
+-   **`data-cerfallocation`**: defines the allocation window used when the chart first loads. Accepted values:
 
-    `""`
+    -   `Total`: Underfunded Emergencies plus Rapid Response
+    -   `Rapid Response`
+    -   `Underfunded Emergencies`
 
-    For individual countries set the value accordingly, such as:
+    If no value is provided, it defaults to `Total`.
 
-    `"Yemen"`.
+-   **`data-shownames`**: defines if the `show names` checkbox is selected when the chart first loads. Accepted values:
 
-    For more than one country separate the values with commas, such as:
+    -   `"true"`: all country names are displayed, even if they overlap.
+    -   `"false"`: the names are displayed only if there is no overlap with neighbor countries.
 
-    `"Yemen, Sudan, Iraq"`.
-
--   **`data-aggregate`**: defines how the third level in the sankey diagram will be aggregated. Accepted values:
-
-    -   `"level"`: aggregates the values by level, that is, implementing vs sub-implementing partners.
-    -   `"type"`: aggregates the values by partner type, each one with a breakdown for partner level.
-
-    If the value is neither `"true"` nor `"false"`, it defaults to `"type"`.
-
--   **`data-minpercen`tage**: defines the minimum value for under approval allocations percentage. If the under approval allocations percentage is above this minimum, _Total USD planned_ values are used for the visual, otherwise _Total Approved Budget_ values are used (refer to the data APIs).
+    If the value is neither `"true"` nor `"false"`, it defaults to `"false"`.
 
 -   **`data-responsive`**: defines if the SVG stretches to the width of the containing element. Accepted values:
 
@@ -113,46 +108,35 @@ Javascript, without JSDoc annotations
 
 ### CSS
 
-The code loads three CSS files:
+The code needs these CSS files for proper styling:
 
--   https://cbpfgms.github.io/css/d3chartstyles.css: contains general styles, used by other visuals.
--   https://cbpfgms.github.io/css/d3chartstylespbinad.css: contains styles for this dataviz.
--   https://use.fontawesome.com/releases/v5.6.3/css/all.css: FontAwesome styles.
+-   Production site: https://github.com/UN-OCHA/cerfdata-unocha-org/blob/master/assets/css/d3chartstyles.css
+
+-   Staging site: https://github.com/CBPFGMS/cerf-bi-stag/blob/master/assets/css/d3chartstyles.css
+
+It also needs Font Awesome styles: `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">`
 
 ### Libraries
 
 -   d3.js, version 5.16. Source: https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js
--   d3-sankey, version 0.12. Source: https://cdnjs.cloudflare.com/ajax/libs/d3-sankey/0.12.3/d3-sankey.js
+-   topojson, version 3.0. Source: https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js
 -   html2canvas, version 1.0.0-rc.1. Source: https://cbpfgms.github.io/libraries/html2canvas.min.js
 -   jsPdf, version 1.5. Source: https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js
--   Polyfills for old browsers: https://cdn.jsdelivr.net/npm/@ungap/url-search-params@0.1.2/min.min.js,
-    https://cdn.jsdelivr.net/npm/promise-polyfill@7/dist/polyfill.min.js,
-    https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.4/fetch.min.js;
 
 ### APIs
 
 #### Data APIs:
 
--   Allocations data: https://cbpfapi.unocha.org/vo2/odata/AllocationTypes?PoolfundCodeAbbrv=&$format=csv
--   Implementing vs sub-implementing data: https://cbpfapi.unocha.org/vo2/odata/AllocationFlowByOrgType?PoolfundCodeAbbrv=&$format=csv
+-   Allocations data: https://cbpfgms.github.io/pfbi-data/cerf/cerf_allocationSummary_byorg.csv
 
 #### Master Tables:
 
--   Funds: https://cbpfapi.unocha.org/vo2/odata/MstPooledFund?$format=csv
--   Partners: https://cbpfapi.unocha.org/vo2/odata/MstOrgType?$format=csv
--   Sub-implementing partners: https://cbpfapi.unocha.org/vo2/odata/SubIPType?$format=csv
+-   Funds: https://cbpfgms.github.io/pfbi-data/mst/MstCountry.json
+-   Allocation types: https://cbpfgms.github.io/pfbi-data/mst/MstAllocation.json
+-   UN Agencies: https://cerfgms-webapi.unocha.org/v1/agency/All.json
+-   Organization types: https://cbpfgms.github.io/pfbi-data/mst/MstOrganization.json
+-   Sectors: https://cbpfgms.github.io/pfbi-data/mst/MstCluster.json
 
-### Miscellaneous
+#### Other
 
-#### Data filters
-
-When loaded at the [production](https://cbpf.data.unocha.org/) or [staging](https://cbpfgms.github.io/cbpf-bi-stag/) sites, the code for this data visualization doesn't fetch the data from the APIs described above directly. Instead, on those sites, a different script fetches the data, checks for the types in the objects and then passes the data to the code. This filtering script is [documented here](../../Utils/CBPF-BI-filters.md).
-
-_Note_: any error in the data types will be logged **only on the staging site** (check the browser's console). On the production site no error will be logged. On both sites, the object with the error is simply ignored.
-
-## Notes
-
-This dataviz can be embedded in any page, the code automatically fetches all data, master tables, libraries and style sheets needed.
-Just copy/paste the following snippet:
-
-`<div id="d3chartcontainerpbinad" data-title="Allocation flow (net funding)" data-year="2025" data-cbpf="all" data-aggregate="type" data-minpercentage="3" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbinad/src/d3chartpbinad.js"></script>`
+-   World map: https://cbpfgms.github.io/pfbi-data/map/unworldmap.json

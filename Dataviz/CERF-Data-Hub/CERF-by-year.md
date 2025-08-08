@@ -18,12 +18,12 @@ This charts uses a sankey diagram for depicting the contribution and allocation 
 
 ### Interactivity
 
-1. At the top right corner of the dataviz there are five buttons:
+1. At the top right corner of the dataviz there are four buttons:
 
     - **Share**: copies a link with all the current selections to the clipboard. Use that link to go to the Bookmark page;
+	- **Play**: Changes the year at a regular interval, allowing the user to visualise changes along time.
     - **Image**: downloads a snapshot of the chart, as a .png file or as a .pdf file. You can also right-click anywhere in the chart to download a snapshot containing the tooltip;
     - **Csv**: downloads the data as a .csv file;
-    - **Help**: shows an annotated layer with tips about how to use and how to understand the chart.
 
 2. The year buttons select the year depicted in the dataviz. Multiple years can be selected by double-clicking or pressing ALT while clicking.
 
@@ -75,9 +75,9 @@ Javascript, without JSDoc annotations
 
 The code needs these CSS files for proper styling:
 
-- Production site: https://github.com/UN-OCHA/cerfdata-unocha-org/blob/master/assets/css/d3chartstyles.css
+-   Production site: https://github.com/UN-OCHA/cerfdata-unocha-org/blob/master/assets/css/d3chartstyles.css
 
-- Staging site: https://github.com/CBPFGMS/cerf-bi-stag/blob/master/assets/css/d3chartstyles.css 
+-   Staging site: https://github.com/CBPFGMS/cerf-bi-stag/blob/master/assets/css/d3chartstyles.css
 
 It also needs Font Awesome styles: `<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">`
 
@@ -92,26 +92,20 @@ It also needs Font Awesome styles: `<link rel="stylesheet" href="https://cdnjs.c
 
 #### Data APIs:
 
--   Allocations data: https://cbpfapi.unocha.org/vo2/odata/AllocationTypes?PoolfundCodeAbbrv=&$format=csv
--   Implementing vs sub-implementing data: https://cbpfapi.unocha.org/vo2/odata/AllocationFlowByOrgType?PoolfundCodeAbbrv=&$format=csv
+-   Contributions data: https://cbpfapi.unocha.org/vo2/odata/AllocationFlowByOrgType?PoolfundCodeAbbrv=&$format=csv
+-   Allocations data: https://cbpfgms.github.io/pfbi-data/contributionSummarySankey.csv
 
 #### Master Tables:
 
--   Funds: https://cbpfapi.unocha.org/vo2/odata/MstPooledFund?$format=csv
--   Partners: https://cbpfapi.unocha.org/vo2/odata/MstOrgType?$format=csv
--   Sub-implementing partners: https://cbpfapi.unocha.org/vo2/odata/SubIPType?$format=csv
+-   Donors: https://cbpfgms.github.io/pfbi-data/mst/MstDonor.json
+-   Funds: https://cbpfgms.github.io/pfbi-data/mst/MstCountry.json
+-   Allocation types: https://cbpfgms.github.io/pfbi-data/mst/MstAllocation.json
+-   UN Agencies: https://cerfgms-webapi.unocha.org/v1/agency/All.json
+-   Organization types: https://cbpfgms.github.io/pfbi-data/mst/MstOrganization.json
+-   Sectors: https://cbpfgms.github.io/pfbi-data/mst/MstClusterCBPFCERF.json
 
-### Miscellaneous
+#### Other
 
-#### Data filters
+-   Donor flags (production site): https://github.com/UN-OCHA/cerfdata-unocha-org/blob/master/assets/img/flags24.json
 
-When loaded at the [production](https://cbpf.data.unocha.org/) or [staging](https://cbpfgms.github.io/cbpf-bi-stag/) sites, the code for this data visualization doesn't fetch the data from the APIs described above directly. Instead, on those sites, a different script fetches the data, checks for the types in the objects and then passes the data to the code. This filtering script is [documented here](../../Utils/CBPF-BI-filters.md).
-
-_Note_: any error in the data types will be logged **only on the staging site** (check the browser's console). On the production site no error will be logged. On both sites, the object with the error is simply ignored.
-
-## Notes
-
-This dataviz can be embedded in any page, the code automatically fetches all data, master tables, libraries and style sheets needed.
-Just copy/paste the following snippet:
-
-`<div id="d3chartcontainerpbinad" data-title="Allocation flow (net funding)" data-year="2025" data-cbpf="all" data-aggregate="type" data-minpercentage="3" data-showhelp="false" data-showlink="true" data-responsive="true" data-lazyload="true"></div><script type="text/javascript" src="https://cbpfgms.github.io/pbinad/src/d3chartpbinad.js"></script>`
+-   Donor flags (staging site): https://github.com/CBPFGMS/cerf-bi-stag/blob/master/assets/img/flags24.json
